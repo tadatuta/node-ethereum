@@ -1,4 +1,4 @@
-js-ethereum
+node-ethereum
 ===========
 
 Node implementation of Ethereum
