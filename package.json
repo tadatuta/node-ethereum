@@ -1,0 +1,31 @@
+{
+  "name": "ethereum",
+  "version": "0.0.1",
+  "description": "A node implementation of Ethereum",
+  "keywords": [
+    "Ethereum",
+    "wei",
+    "ether"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/josephyzhou/node-ethereum.git"
+
+  },
+  "homepage": "https://github.com/josephyzhou/node-ethereum",
+  "bugs": "https://github.com/josephyzhou/node-ethereum/issues",
+  "author": {
+    "name": "Joey Zhou",
+    "email": "josephyzhou@gmail.com",
+    "url": "https://github.com/josephyzhou"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha": ">=1.15.1"
+  },
+  "licenses": "MIT"
+}
