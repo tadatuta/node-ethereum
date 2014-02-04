@@ -27,7 +27,8 @@
     "binary": ">=0.2.5 <0.3",
     "winston": ">=0.2.6",
     "leveldown": ">=0.2.1",
-    "levelup": "~0.18.2"
+    "levelup": "~0.18.2",
+    "sha3": "~1.0.0"
   },
   "devDependencies": {
     "mocha": ">=1.15.1"
