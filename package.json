@@ -22,7 +22,8 @@
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {
+  "dependencies": {    
+    "bignum": "=0.6.1"
   },
   "devDependencies": {
     "mocha": ">=1.15.1"
