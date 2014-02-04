@@ -10,7 +10,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/josephyzhou/node-ethereum.git"
-
   },
   "homepage": "https://github.com/josephyzhou/node-ethereum",
   "bugs": "https://github.com/josephyzhou/node-ethereum/issues",
@@ -22,8 +21,13 @@
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {    
-    "bignum": "=0.6.1"
+  "dependencies": {
+    "bignum": "=0.6.1",
+    "buffertools": ">=1.0.3",
+    "binary": ">=0.2.5 <0.3",
+    "winston": ">=0.2.6",
+    "leveldown": ">=0.2.1",
+    "levelup": "~0.18.2"
   },
   "devDependencies": {
     "mocha": ">=1.15.1"
