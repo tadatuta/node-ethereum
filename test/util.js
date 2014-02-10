@@ -10,8 +10,7 @@ describe('Sha3 256 bits:', function() {
     });
 });
 
-describe('RLP encoding:', function() {
-  // var expected1 = new Buffer([ 0x83, 'd', 'o', 'g' ]);
+describe('RLP encoding (string):', function() {
   it('should return itself if single byte and less than 0x7f:', function() {
     var encodedSelf = Util.encodeRLP('a');
     assert.equal(encodedSelf.toString(), 'a');
@@ -19,17 +18,32 @@ describe('RLP encoding:', function() {
 
   it('length of data 0-55 should return (0x80+len(data)) plus data', function() {
     var encodedDog = Util.encodeRLP('dog');
-    // console.log(encodedDog.toString());
-    // console.log(encodedDog.length);
-    // console.log(encodedDog[0].toString());
-    // console.log(encodedDog[1].toString());
-    // console.log(encodedDog[2].toString());
-    // console.log(encodedDog[3].toString());
     assert.equal(4, encodedDog.length);
     assert.equal(encodedDog[0], 131);
     assert.equal(encodedDog[1], 100);
     assert.equal(encodedDog[2], 111);
     assert.equal(encodedDog[3], 103);
+  });
+  
+  it('length of data >55 should return 0xb7+len(len(data)) plus len(data) plus data', function() {
+    var encodedLongString = Util.encodeRLP('zoo255zoo255zzzzzzzzzzzzssssssssssssssssssssssssssssssssssssssssssssss');
+    assert.equal(72, encodedLongString.length);
+    assert.equal(encodedLongString[0], 184);
+    assert.equal(encodedLongString[1], 70);
+    assert.equal(encodedLongString[2], 122);
+    assert.equal(encodedLongString[3], 111);
+    assert.equal(encodedLongString[12], 53)
+  });
+});
+
+describe('RLP encoding (list):', function() {
+  it('length of data 0-55 should return (0xc0+len(data)) plus data', function() {
+    var encodedArrayOfStrings = Util.encodeRLP(['dog', 'god', 'cat']);
+    assert.equal(13, encodedArrayOfStrings.length);
+    assert.equal(encodedArrayOfStrings[0], 204);
+    assert.equal(encodedArrayOfStrings[1], 131);
+    assert.equal(encodedArrayOfStrings[11], 97);
+    assert.equal(encodedArrayOfStrings[12], 116);
   });
   
   it('length of data >55 should return 0xb7+len(len(data)) plus len(data) plus data', function() {
