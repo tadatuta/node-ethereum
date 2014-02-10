@@ -16,7 +16,7 @@ describe('RLP encoding (string):', function() {
     assert.equal(encodedSelf.toString(), 'a');
   });
 
-  it('length of data 0-55 should return (0x80+len(data)) plus data', function() {
+  it('length of string 0-55 should return (0x80+len(data)) plus data', function() {
     var encodedDog = Util.encodeRLP('dog');
     assert.equal(4, encodedDog.length);
     assert.equal(encodedDog[0], 131);
@@ -25,19 +25,19 @@ describe('RLP encoding (string):', function() {
     assert.equal(encodedDog[3], 103);
   });
   
-  it('length of data >55 should return 0xb7+len(len(data)) plus len(data) plus data', function() {
+  it('length of string >55 should return 0xb7+len(len(data)) plus len(data) plus data', function() {
     var encodedLongString = Util.encodeRLP('zoo255zoo255zzzzzzzzzzzzssssssssssssssssssssssssssssssssssssssssssssss');
     assert.equal(72, encodedLongString.length);
     assert.equal(encodedLongString[0], 184);
     assert.equal(encodedLongString[1], 70);
     assert.equal(encodedLongString[2], 122);
     assert.equal(encodedLongString[3], 111);
-    assert.equal(encodedLongString[12], 53)
+    assert.equal(encodedLongString[12], 53);
   });
 });
 
 describe('RLP encoding (list):', function() {
-  it('length of data 0-55 should return (0xc0+len(data)) plus data', function() {
+  it('length of list 0-55 should return (0xc0+len(data)) plus data', function() {
     var encodedArrayOfStrings = Util.encodeRLP(['dog', 'god', 'cat']);
     assert.equal(13, encodedArrayOfStrings.length);
     assert.equal(encodedArrayOfStrings[0], 204);
@@ -46,7 +46,27 @@ describe('RLP encoding (list):', function() {
     assert.equal(encodedArrayOfStrings[12], 116);
   });
   
-  it('length of data >55 should return 0xb7+len(len(data)) plus len(data) plus data', function() {
+  it('length of list >55 should return 0xf7+len(len(data)) plus len(data) plus data', function() {
+    //need a test case here!
+  });
+});
+
+
+describe('RLP encoding (integer):', function() {
+  it('length of int = 1, less than 0x7f, similar to string', function() {
+    var encodedNumber = Util.encodeRLP(15);
+    assert.equal(1, encodedNumber.length);
+    assert.equal(encodedNumber[0], 15);
+  });
+  it('length of int > 55, similar to string', function() {
+    var encodedNumber = Util.encodeRLP(1024);
+    assert.equal(3, encodedNumber.length);
+    assert.equal(encodedNumber[0], 130);
+    assert.equal(encodedNumber[1], 4);
+    assert.equal(encodedNumber[2], 0);
+  });
+  
+  it('length of int >55 should return 0xf7+len(len(data)) plus len(data) plus data', function() {
     //need a test case here!
   });
 });
