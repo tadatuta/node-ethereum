@@ -66,7 +66,7 @@ describe('RLP encoding (integer):', function() {
     assert.equal(encodedNumber[2], 0);
   });
   
-  it('length of int >55 should return 0xf7+len(len(data)) plus len(data) plus data', function() {
+  it('length of int >55, similar to string', function() {
     //need a test case here!
   });
 });
