@@ -88,7 +88,7 @@ describe('RLP decoding (string):', function() {
 
 describe('RLP decoding (int):', function() {
   it('first byte < 0x7f, return itself', function() {
-    var decodedSmallNum = Util.decodeRLP(15,0);
+    var decodedSmallNum = Util.decodeRLP(new Buffer([15]),0);
     assert.equal(1, decodedSmallNum.length);
     assert.equal(decodedSmallNum[0], 15);
   });
@@ -98,4 +98,5 @@ describe('RLP decoding (int):', function() {
     assert.equal(2, decodedNum.length);
     assert.equal(bignum.fromBuffer(decodedNum), 1024);
   });
+    
 });
