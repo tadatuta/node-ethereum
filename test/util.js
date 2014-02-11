@@ -1,5 +1,6 @@
 var assert = require('assert');
 var Util = require('../lib/util');
+var bignum = require('bignum');
 
 describe('Sha3 256 bits:', function() {
   var expectedHash = "7c5ea36004851c764c44143b1dcb59679b11c9a68e5f41497f6cf3d480715331";
@@ -72,22 +73,17 @@ describe('RLP encoding (integer):', function() {
 });
 
 describe('RLP decoding (string):', function() {
-  it('first byte < 0x7f, return itself', function() {
-    var decodedSmallStr = Util.decodeRLP("a",0);
-    assert.equal(1, decodedSmallStr.length);
-    assert.equal(decodedSmallStr.toString(), "a");
+  it('first byte < 0x7f, return byte itself', function() {
+    var decodedStr = Util.decodeRLP(new Buffer([97]),0);
+    assert.equal(1, decodedStr.length);
+    assert.equal(decodedStr.toString(), "a");
   });
-  // it('length of int > 55, similar to string', function() {
-  //   var encodedNumber = Util.encodeRLP(1024);
-  //   assert.equal(3, encodedNumber.length);
-  //   assert.equal(encodedNumber[0], 130);
-  //   assert.equal(encodedNumber[1], 4);
-  //   assert.equal(encodedNumber[2], 0);
-  // });
-  
-  // it('length of int >55, similar to string', function() {
-  //   //need a test case here!
-  // });
+
+    it('first byte < 0xb7, data is everything except first byte', function() {
+    var decodedStr = Util.decodeRLP(new Buffer([131,100,111,103]),0);
+    assert.equal(3, decodedStr.length);
+    assert.equal(decodedStr.toString(), "dog");
+  });
 });
 
 describe('RLP decoding (int):', function() {
@@ -96,15 +92,10 @@ describe('RLP decoding (int):', function() {
     assert.equal(1, decodedSmallNum.length);
     assert.equal(decodedSmallNum[0], 15);
   });
-  // it('length of int > 55, similar to string', function() {
-  //   var encodedNumber = Util.encodeRLP(1024);
-  //   assert.equal(3, encodedNumber.length);
-  //   assert.equal(encodedNumber[0], 130);
-  //   assert.equal(encodedNumber[1], 4);
-  //   assert.equal(encodedNumber[2], 0);
-  // });
-  
-  // it('length of int >55, similar to string', function() {
-  //   //need a test case here!
-  // });
+
+    it('first byte < 0xb7, data is everything except first byte', function() {
+    var decodedNum = Util.decodeRLP(new Buffer([130,4,0]),0);
+    assert.equal(2, decodedNum.length);
+    assert.equal(bignum.fromBuffer(decodedNum), 1024);
+  });
 });
