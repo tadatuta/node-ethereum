@@ -73,10 +73,28 @@ describe('RLP encoding (integer):', function() {
 
 describe('RLP decoding (string):', function() {
   it('first byte < 0x7f, return itself', function() {
-    var decodedString = Util.decodeRLP(15,0);
-    console.log(decodedString);
-    assert.equal(1, decodedString.length);
-    assert.equal(decodedString[0], 15);
+    var decodedSmallStr = Util.decodeRLP("a",0);
+    assert.equal(1, decodedSmallStr.length);
+    assert.equal(decodedSmallStr.toString(), "a");
+  });
+  // it('length of int > 55, similar to string', function() {
+  //   var encodedNumber = Util.encodeRLP(1024);
+  //   assert.equal(3, encodedNumber.length);
+  //   assert.equal(encodedNumber[0], 130);
+  //   assert.equal(encodedNumber[1], 4);
+  //   assert.equal(encodedNumber[2], 0);
+  // });
+  
+  // it('length of int >55, similar to string', function() {
+  //   //need a test case here!
+  // });
+});
+
+describe('RLP decoding (int):', function() {
+  it('first byte < 0x7f, return itself', function() {
+    var decodedSmallNum = Util.decodeRLP(15,0);
+    assert.equal(1, decodedSmallNum.length);
+    assert.equal(decodedSmallNum[0], 15);
   });
   // it('length of int > 55, similar to string', function() {
   //   var encodedNumber = Util.encodeRLP(1024);
