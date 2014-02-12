@@ -95,12 +95,7 @@ describe('RLP decoding (string):', function() {
       data: new Buffer([204, 131, 100, 111, 103, 131, 103, 111, 100, 131, 99, 97, 116]),
       pos: 0
     }).data;
-    var test = new Buffer([12, [2, 4]]);
-    console.log("test: " + test.toJSON());
-    console.log(decodedBuffer);
-    console.log(new Buffer(['dog', 'god', 'cat']));
-    // assert.equal(3, decodedStr.length);
-    // assert.equal(decodedStr.toString(), "dog");
+    assert.equal(decodedBuffer.toString(), ["dog", "god", "cat"]);
   });
 });
 
