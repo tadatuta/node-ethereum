@@ -25,7 +25,7 @@ describe('RLP encoding (string):', function() {
     assert.equal(encodedDog[2], 111);
     assert.equal(encodedDog[3], 103);
   });
-  
+
   it('length of string >55 should return 0xb7+len(len(data)) plus len(data) plus data', function() {
     var encodedLongString = Util.encodeRLP('zoo255zoo255zzzzzzzzzzzzssssssssssssssssssssssssssssssssssssssssssssss');
     assert.equal(72, encodedLongString.length);
@@ -46,7 +46,7 @@ describe('RLP encoding (list):', function() {
     assert.equal(encodedArrayOfStrings[11], 97);
     assert.equal(encodedArrayOfStrings[12], 116);
   });
-  
+
   it('length of list >55 should return 0xf7+len(len(data)) plus len(data) plus data', function() {
     //need a test case here!
   });
@@ -66,7 +66,7 @@ describe('RLP encoding (integer):', function() {
     assert.equal(encodedNumber[1], 4);
     assert.equal(encodedNumber[2], 0);
   });
-  
+
   it('length of int >55, similar to string', function() {
     //need a test case here!
   });
@@ -74,29 +74,53 @@ describe('RLP encoding (integer):', function() {
 
 describe('RLP decoding (string):', function() {
   it('first byte < 0x7f, return byte itself', function() {
-    var decodedStr = Util.decodeRLP(new Buffer([97]),0);
+    var decodedStr = Util.decodeRLP({
+      data: new Buffer([97]),
+      pos: 0
+    }).data;
     assert.equal(1, decodedStr.length);
     assert.equal(decodedStr.toString(), "a");
   });
 
-    it('first byte < 0xb7, data is everything except first byte', function() {
-    var decodedStr = Util.decodeRLP(new Buffer([131,100,111,103]),0);
+  it('first byte < 0xb7, data is everything except first byte', function() {
+    var decodedStr = Util.decodeRLP({
+      data: new Buffer([131, 100, 111, 103]),
+      pos: 0
+    }).data;
     assert.equal(3, decodedStr.length);
     assert.equal(decodedStr.toString(), "dog");
+  });
+  it('array', function() {
+    var decodedBuffer = Util.decodeRLP({
+      data: new Buffer([204, 131, 100, 111, 103, 131, 103, 111, 100, 131, 99, 97, 116]),
+      pos: 0
+    }).data;
+    var test = new Buffer([12, [2, 4]]);
+    console.log("test: " + test.toJSON());
+    console.log(decodedBuffer);
+    console.log(new Buffer(['dog', 'god', 'cat']));
+    // assert.equal(3, decodedStr.length);
+    // assert.equal(decodedStr.toString(), "dog");
   });
 });
 
 describe('RLP decoding (int):', function() {
   it('first byte < 0x7f, return itself', function() {
-    var decodedSmallNum = Util.decodeRLP(new Buffer([15]),0);
+    var decodedSmallNum = Util.decodeRLP({
+      data: new Buffer([15]),
+      pos: 0
+    }).data;
     assert.equal(1, decodedSmallNum.length);
     assert.equal(decodedSmallNum[0], 15);
   });
 
-    it('first byte < 0xb7, data is everything except first byte', function() {
-    var decodedNum = Util.decodeRLP(new Buffer([130,4,0]),0);
+  it('first byte < 0xb7, data is everything except first byte', function() {
+    var decodedNum = Util.decodeRLP({
+      data: new Buffer([130, 4, 0]),
+      pos: 0
+    }).data;
     assert.equal(2, decodedNum.length);
     assert.equal(bignum.fromBuffer(decodedNum), 1024);
   });
-    
+
 });
