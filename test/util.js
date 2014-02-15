@@ -122,14 +122,14 @@ describe('RLP decoding (int):', function() {
 
 describe('Compact encoding:', function() {
   it('should handle even case.', function() {
-    var testBuffer =[1, 2, 3, 4, 5];
-    var res = Util.compactEncode(testBuffer);
-    assert.deepEqual([17,35,69], res);
+    var testBuffer = [1, 2, 3, 4, 5];
+    var res = Util.compactEncode(testBuffer).toJSON();
+    assert.deepEqual([17, 35, 69], res);
   });
 
   it('should handle odd case', function() {
-    var testBuffer =[0, 1, 2, 3, 4, 5];
-    var res = Util.compactEncode(testBuffer);
+    var testBuffer = [0, 1, 2, 3, 4, 5];
+    var res = Util.compactEncode(testBuffer).toJSON();
     assert.deepEqual([0, 1, 35, 69], res);
   });
 
