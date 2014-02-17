@@ -134,3 +134,12 @@ describe('Compact encoding:', function() {
   });
 
 });
+
+describe('Compact decoding:', function() {
+  it('should decode to hex.', function() {
+    var res = Util.compactHexDecode('verb');
+    console.log(res);
+    // assert.deepEqual([17, 35, 69], res);
+  });
+
+});
