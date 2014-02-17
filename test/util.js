@@ -136,7 +136,7 @@ describe('Compact encoding:', function() {
 });
 
 describe('Compact hex decoding:', function() {
-  it('should handle even case.', function() {
+  it('should decode to hex.', function() {
     var exp = [7, 6, 6, 5, 7, 2, 6, 2, 16];
     var res = Util.compactHexDecode('verb');
     assert.deepEqual(exp, res);
@@ -145,8 +145,18 @@ describe('Compact hex decoding:', function() {
 });
 
 describe('Compact decoding:', function() {
-  it('should decode to hex.', function() {
-  
+  it('should handle even case.', function() {
+    var testBuffer = new Buffer([17, 35, 69]);
+    var exp = [1, 2, 3, 4, 5];
+    var res = Util.compactDecode(testBuffer);
+    assert.deepEqual(exp, res);
+  });
+
+  it('should handle odd case', function() {
+    var testBuffer = new Buffer([0, 1, 35, 69]);
+    var exp = [0, 1, 2, 3, 4, 5];
+    var res = Util.compactDecode(testBuffer);
+    assert.deepEqual(exp, res);
   });
 
 });
