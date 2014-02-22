@@ -7,6 +7,7 @@ Node implementation of Ethereum
 
 ####Install
 `npm install`
+* On linux, you may have to do `sudo aptitude install g++` (I'm on Mint 13)
 
 ####Testing
 `npm test`
