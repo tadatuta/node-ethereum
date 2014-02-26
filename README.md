@@ -2,7 +2,7 @@ node-ethereum
 ===========
 [![Build Status](https://travis-ci.org/josephyzhou/node-ethereum.png?branch=master)](https://travis-ci.org/josephyzhou/node-ethereum)
 
-Node implementation of Ethereum
+Node implementation of [Ethereum](http://Ethereum.org)
 **All engineering ingenuity stolen from go-ethereum**
 
 ####Install
@@ -11,3 +11,8 @@ Node implementation of Ethereum
 
 ####Testing
 `npm test`
+
+####Docs
+`npm install -g docker`
+
+`sh bootstrap.sh`
