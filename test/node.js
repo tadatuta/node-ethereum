@@ -1,5 +1,13 @@
 var Node = require('../lib/schema/trie/node');
+var Util = require('../lib/util');
 var assert = require('assert');
+
+describe('Type checks:', function () {
+  it('should type check node.', function () {
+    var n = new Node('key', 'value', true);
+    assert(Util.isNode(n));
+  })
+});
 
 describe('Node deep copy:', function () {
   var n = new Node('dog', 'cat', true);
