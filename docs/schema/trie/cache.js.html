@@ -220,7 +220,7 @@
 <p>Get the key of the database instead and cache it</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-  <span class="nx">dbObj</span><span class="o">:</span> <span class="o">=</span> <span class="nx">cache</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+  <span class="nx">dbObj</span> <span class="o">=</span> <span class="nx">cache</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">dbObj</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
       <span class="nx">error</span><span class="o">:</span> <span class="nx">dbObj</span><span class="p">.</span><span class="nx">error</span>
@@ -236,6 +236,46 @@
     <span class="nx">data</span><span class="o">:</span> <span class="nx">dbObj</span><span class="p">.</span><span class="nx">data</span>
   <span class="p">}</span>
 <span class="p">};</span>
+
+
+</pre></div>
+	</td>
+      </tr>
+      <tr>
+	<td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Delete value with key in cache</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">key</span>
+      <span class="dox_type">String</span>
+    </div>
+  </div>
+</div>
+	</td>
+	<td class="code highlight"><div class="highlight"><pre>
+<span class="nx">cache</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="k">delete</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
+    <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+    <span class="nx">dbObj</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">dbObj</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">{</span>
+	<span class="nx">error</span><span class="o">:</span> <span class="nx">dbObj</span><span class="p">.</span><span class="nx">error</span>
+      <span class="p">};</span>
+    <span class="p">}</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;[Cache.delete] Key: &#39;</span> <span class="o">+</span> <span class="nx">key</span> <span class="o">+</span> <span class="s1">&#39; does not exist in the cache&#39;</span>
+    <span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 <span class="nx">exports</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">cache</span><span class="p">;</span>
 </pre></div>
