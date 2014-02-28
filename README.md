@@ -16,3 +16,6 @@ Node implementation of [Ethereum](http://Ethereum.org)
 `npm install -g docker`
 
 `sh bootstrap.sh`
+
+####License
+MIT + [Rude License](https://github.com/josephyzhou/Rude-Software-License/blob/master/license.md)
