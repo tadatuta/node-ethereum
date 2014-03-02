@@ -29,7 +29,8 @@
     "levelup": "~0.18.2",
     "crypto-js": "~3.1.2-2",
     "path": "~0.4.9",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "mkdirp": "~0.3.5"
   },
   "devDependencies": {
     "mocha": ">=1.15.1",
