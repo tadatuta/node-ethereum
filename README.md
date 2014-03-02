@@ -7,15 +7,16 @@ Node implementation of [Ethereum](http://Ethereum.org)
 
 ####Install
 `npm install`
+
+`npm install -g docker`
+
 * On linux, you may have to do `sudo aptitude install g++` (I'm on Mint 13)
+
+####Bootstrap (modify however you want)
+`sh bootstrap.sh`
 
 ####Testing
 `npm test`
-
-####Docs
-`npm install -g docker`
-
-`sh bootstrap.sh`
 
 ####License
 MIT + [Rude License](https://github.com/josephyzhou/Rude-Software-License/blob/master/license.md)
