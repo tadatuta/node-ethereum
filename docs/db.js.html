@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="doc-style.css" />
   <script src="doc-filelist.js"></script>
   <script>
-    var relativeDir = "", thisFile = "Users/Joey/GitHub/node-ethereum//db.js", defaultSidebar = true;
+    var relativeDir = "", thisFile = "home/null/dev/node-ethereum//db.js", defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
 </head>
@@ -40,25 +40,100 @@
         <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Settings</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./settings&quot;</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">levelup</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;levelup&#39;</span><span class="p">);</span>
 
-<span class="kd">var</span> <span class="nx">settingURI</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Settings</span><span class="p">()).</span><span class="nx">db</span><span class="p">.</span><span class="nx">uri</span><span class="p">;</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">settingURI</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">settingURI</span> <span class="o">=</span> <span class="nx">Settings</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">uri</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>console.log(settingURI);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
 <span class="kd">var</span> <span class="nx">db</span> <span class="o">=</span> <span class="nx">levelup</span><span class="p">(</span><span class="nx">settingURI</span><span class="p">);</span>
 
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>TODO: look more into option, potentially pass in Util.compactEncode/Decode
+as a part of options obj</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
 <span class="kd">var</span> <span class="nx">get</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Get method for db&quot;</span><span class="p">);</span>
+  <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">notFound</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span>
+          <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;[DB.get]: Cannot find value for &#39;</span> <span class="o">+</span> <span class="nx">key</span>
+        <span class="p">};</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;[DB.get]:&#39;</span> <span class="o">+</span> <span class="nx">err</span>
+      <span class="p">};</span>
+    <span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>Returned some value</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">data</span><span class="o">:</span> <span class="nx">value</span>
+    <span class="p">};</span>
+  <span class="p">})</span>
 <span class="p">};</span>
 
 <span class="kd">var</span> <span class="nx">put</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">put</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Put method for db&quot;</span><span class="p">);</span>
+  <span class="nx">db</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;[DB.put]: &#39;</span> <span class="o">+</span> <span class="nx">err</span>
+      <span class="p">};</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
 <span class="p">};</span>
 
 <span class="kd">var</span> <span class="nx">del</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="k">delete</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Delete method for db&quot;</span><span class="p">);</span>
+  <span class="nx">db</span><span class="p">.</span><span class="nx">del</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;[DB.del]: &#39;</span> <span class="o">+</span> <span class="nx">err</span>
+      <span class="p">};</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
 <span class="p">};</span>
 
 <span class="kd">var</span> <span class="nx">LastKnownTD</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">LastKnownTD</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Last known total difficulty&quot;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">lastDiff</span> <span class="o">=</span> <span class="nx">get</span><span class="p">(</span><span class="s1">&#39;LastKnownTotalDifficulty&#39;</span><span class="p">);</span>
+  <span class="nx">lastDiff</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="p">(</span><span class="nx">lastDiff</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">lastDiff</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">lastDiff</span><span class="p">;</span>
 <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">close</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">close</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">db</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;[DB.close]: &#39;</span> <span class="o">+</span> <span class="nx">err</span>
+      <span class="p">};</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">}</span>
 </pre></div>
         </td>
       </tr>

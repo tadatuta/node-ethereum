@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="../../doc-style.css" />
   <script src="../../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../../", thisFile = "Users/Joey/GitHub/node-ethereum//schema/trie/cache.js", defaultSidebar = true;
+    var relativeDir = "../../", thisFile = "home/null/dev/node-ethereum//schema/trie/cache.js", defaultSidebar = true;
   </script>
   <script src="../../doc-script.js"></script>
 </head>
@@ -239,10 +239,10 @@
 
 
 </pre></div>
-	</td>
+        </td>
       </tr>
       <tr>
-	<td class="docs">
+        <td class="docs">
 <div class="pilwrap">
   <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
 </div>
@@ -259,15 +259,15 @@
     </div>
   </div>
 </div>
-	</td>
-	<td class="code highlight"><div class="highlight"><pre>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
 <span class="nx">cache</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="k">delete</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
     <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
     <span class="nx">dbObj</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">dbObj</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="p">{</span>
-	<span class="nx">error</span><span class="o">:</span> <span class="nx">dbObj</span><span class="p">.</span><span class="nx">error</span>
+        <span class="nx">error</span><span class="o">:</span> <span class="nx">dbObj</span><span class="p">.</span><span class="nx">error</span>
       <span class="p">};</span>
     <span class="p">}</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
