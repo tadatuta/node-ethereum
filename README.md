@@ -22,7 +22,7 @@ Node implementation of [Ethereum](http://Ethereum.org)
 [See this wiki](https://github.com/josephyzhou/node-ethereum/wiki/Rules-of-Contribution)
 
 #### TODO/State of the project
-[coming soon](https://github.com/josephyzhou/node-ethereum/wiki/TODO)
+[See this wiki](https://github.com/josephyzhou/node-ethereum/wiki/TODO)
 
 ####License
 MIT + [Rude License](https://github.com/josephyzhou/Rude-Software-License/blob/master/license.md)
