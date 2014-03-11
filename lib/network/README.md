@@ -2,7 +2,7 @@ Networking
 =========
 
 - [`Network`](#network)
-    - [`new Network([host], [post], [options])`](#new-network-host-port-options)
+    - [`new Network([host], [post], [options])`](#new-networkhost-port-options)
     - [`Network` methods](#network-methods)
     - [`Network` events](#network-events)
     - [`Network` event objects](#network-event-objects)
@@ -23,8 +23,8 @@ Creates new Network object with the following arguments
 The Network object inherits from `Events.EventEmitter` and emits the following events:
 
 - `'message'` - emitted when whenever the the network server gets a new message. It is provided with two objects `payload` - the RLP decoded buffer and `raw` the raw message.
-- `'message.hello'` - emitted on receiving a hello message. It is provided with a hello [object](#hello)
-- `'message.disconnect'`- emitted on receiving a disconnect [object](#disconnect). 
+- `'message.hello'` - emitted on receiving a hello message. It is provided with a [hello object](#hello)
+- `'message.disconnect'`- emitted on receiving a [disconnect object](#disconnect). 
 - `'message.ping'` - emitted on receiving a ping
 - `'message.pong'` - emitted on receiving a pong
 - `'message.sendPeers'` - emitted on receiving a send peers message
