@@ -18,5 +18,11 @@ Node implementation of [Ethereum](http://Ethereum.org)
 ####Testing
 `npm test`
 
+#### Rules for Contributions
+[See this wiki](https://github.com/josephyzhou/node-ethereum/wiki/Rules-of-Contribution)
+
+#### TODO/State of the project
+[See this wiki](https://github.com/josephyzhou/node-ethereum/wiki/TODO)
+
 ####License
 MIT + [Rude License](https://github.com/josephyzhou/Rude-Software-License/blob/master/license.md)
