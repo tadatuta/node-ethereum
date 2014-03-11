@@ -37,7 +37,7 @@ The Network object inherits from `Events.EventEmitter` and emits the following e
     
 ###  `Network` event objects
 #### `hello`
-- `protocolVersion` - `int` the protocal version of the peer
+- `protocolVersion` - the protocol version of the peer
 - `networkId` - should be 0 
 - `clientId` - Specifies the client software identity, as a human-readable string (e.g. "Ethereum(++)/1.0.0"). 
 - `capabilities` - pecifies the capabilities of the client as a set of boolean flags
