@@ -17,7 +17,7 @@ Creates new Network object with the following arguments
 - `port` - the TPC port the server is listening to. Defaults to port `30303` 
 
 ### `Network` methods
-    `network.listen` - start the tcp server
+- `network.listen` - start the tcp server
 
 ### `Network` events
 The Network object inherits from `Events.EventEmitter` and emits the following events:
