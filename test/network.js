@@ -1,4 +1,4 @@
-var Network = require('../network');
+var Network = require('../lib/network/network.js');
 var net = require('net');
 var assert = require('assert');
 var network = new Network();
