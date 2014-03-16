@@ -54,7 +54,7 @@ returns an array of connected peers a instances of the [peer object](#peer)
 #### `network.getPeerList()`
 returns an array of peers the server knows about but is not connected to. The server uses this list to replace peers that disconnect. 
 
-### `network.broadcastTxs(Txs, [callback])` 
+#### `network.broadcastTxs(Txs, [callback])` 
 broadcasts an array of transactions to the connected peers
 - `Txs` - an array of valid transactions
 
