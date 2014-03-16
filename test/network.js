@@ -16,8 +16,7 @@ var host2 = "localhost";
 describe("Network listening functions", function() {
 
     it("should listen", function(done) {
-        network.listen(port, host);
-        done();
+        network.listen(port, host, done);
     });
 
     it("should stop listening", function(done) {
