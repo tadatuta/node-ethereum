@@ -3,6 +3,8 @@ var net = require('net');
 var assert = require('assert');
 var network = new Network();
 var network2 = new Network();
+var peer;
+var peer2;
 
 //test port and host
 var port = 4445;
@@ -15,7 +17,7 @@ describe("Network listening functions", function() {
 
     it("should listen", function(done) {
         network.listen(port, host);
-            done();
+        done();
     });
 
     it("should stop listening", function(done) {
@@ -30,7 +32,7 @@ describe("Network connect functions", function() {
 
     it("should connect to a peer", function(done) {
         server = net.createServer();
-        server.once('connection', function(sock){
+        server.once('connection', function(sock) {
             socket = sock;
             done();
         });
@@ -48,16 +50,14 @@ describe("Network connect functions", function() {
 });
 
 describe("Peer Messages", function(done) {
-    before(function(){
-    
+    before(function(done) {
         network = new Network();
         network2 = new Network();
-        network2.listen(port + 1, host);
-    
+        network2.listen(port + 1, host, done);
     });
 
     it("should send a hello message on connect", function(done) {
-        network.on('message.hello', function(data) {
+        network.once('message.hello', function(data) {
             done();
         });
         network.connect(port + 1, host);
@@ -66,5 +66,35 @@ describe("Peer Messages", function(done) {
     it("should store the peer in a hash", function() {
         var peers = network2.getPeers();
         assert(peers.length, 1);
+        peer2 = peers[0];
+    });
+
+    it("should send a ping", function(done) {
+        network.once('message.ping', function() {
+            done();
+        });
+        peer2.sendPing();
+    });
+
+    it("should send a pong", function(done) {
+        network.once('message.pong', function() {
+            done();
+        });
+        peer = network.getPeers()[0];
+        peer.sendPing();
+    });
+
+    it("should send get peers", function(done) {
+        network.once('message.getPeers', function() {
+            done();
+        });
+        peer2.sendGetPeers();
+    });
+
+    it("should send peers", function(done) {
+        network.once('message.peers', function() {
+            done();
+        });
+        peer.sendPeers();
     });
 });
