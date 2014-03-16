@@ -7,6 +7,9 @@ Networking
     - [`Network` methods](#network-methods)
         - [`network.listen([port], [host])`](#networklistenport-host)
         - [`network.connect(port, host, [callback])`](#networkconnectport-host-callback)
+        - [`network.stop([callback])`](#networkstopcallback)
+        - [`network.getPeers()`](#networkgetpeers)
+        - [`network.getPeerList()`](#networkgetpeerlist)
     - [`Network` events](#network-events)
     - [`Network` event objects](#network-event-objects)
 - [`Peer`](#peer)
@@ -43,6 +46,20 @@ When creating a Network the following options can be used to configure its behav
 #### `network.listen([port], [host])` - start the tcp server
 - `host` - The hostname or IP address the server is bound to. Defaults to `0.0.0.0` which means any available network
 - `port` - The TPC port the server is listening to. Defaults to port `30303` 
+
+#### `network.stop([callback])`
+stops the tcp server and disconnects any peers
+#### `network.getPeers()`
+returns an array of connected peers a instances of the [peer object](#peer)
+#### `network.getPeerList()`
+returns an array of peers the server knows about but is not connected to. The server uses this list to replace peers that disconnect. 
+
+### `network.broadcastTxs(Txs, [callback])` 
+broadcasts an array of transactions to the connected peers
+- `Txs` - an array of valid transactions
+
+### `network.broadcastBlocks(blocks, [callback])` - broadcast an array of blocks to the connected peers
+- `blocks` - an array of blocks to broadcast
 
 #### `network.connect(port, host, [callback])` - connect to a peer
 - `host` - the hostname or IP of the peer
