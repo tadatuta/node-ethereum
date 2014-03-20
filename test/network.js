@@ -1,8 +1,10 @@
 var Network = require('../lib/network/network.js');
+var RLP = require('rlp');
 var net = require('net');
 var assert = require('assert');
 var network = new Network();
 var network2 = new Network();
+var socket = null;
 var peer;
 var peer2;
 
@@ -26,7 +28,6 @@ describe("Network listening functions", function() {
 
 describe("Network connect functions", function() {
     var server = null;
-    var socket = null;
     var listenPort = 3333;
 
     it("should connect to a peer", function(done) {
@@ -95,5 +96,41 @@ describe("Peer Messages", function(done) {
             done();
         });
         peer.sendPeers();
+    });
+});
+
+describe("Message Validation", function(done) {
+    var lastData;
+    before(function(done) {
+        network = new Network();
+        socket = new net.Socket();
+        network.listen(port + 2, host, done);
+    });
+
+    it("should disconnect with reaosn 0x02 on invalid magic token", function(done) {
+        function sendBadSyncToken(socket) {
+            var message = [0x00, 0x00] ///hello
+            var BAD_SYNC_TOKEN = '22400892';
+            var payload = RLP.encode(message);
+            var len = new Buffer(4);
+            len.writeUInt32BE(payload.length, 0);
+            var formatedPayload = Buffer.concat([new Buffer(BAD_SYNC_TOKEN, 'hex'), len, payload]);
+            socket.write(formatedPayload);
+        }
+
+        socket.on('data', function(data){
+            lastData = data;
+        });
+
+        socket.on("connect", function(){
+            sendBadSyncToken(socket);
+        });
+
+        socket.on("close", function(){
+            assert.equal(lastData.toString('hex'), '2240089100000003c20102');
+            done();
+        });
+
+        socket.connect(port + 2, host);
     });
 });
