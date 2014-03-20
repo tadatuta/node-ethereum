@@ -1,24 +1,19 @@
-var Network = require('../lib/network/network.js');
-var RLP = require('rlp');
-var net = require('net');
-var assert = require('assert');
-var network = new Network();
-var network2 = new Network();
-var socket = null;
-var peer;
-var peer2;
-
-//test port and host
-var port = 4445;
-var host = "localhost";
-
-var port2 = 22223;
-var host2 = "localhost";
+var Network = require('../lib/network/network.js'),
+    RLP = require('rlp'),
+    net = require('net'),
+    assert = require('assert'),
+    internals = {
+        //test port and host
+        port: 4445,
+        host: "localhost",
+    };
 
 describe("Network listening functions", function() {
 
+    var network = new Network();
+
     it("should listen", function(done) {
-        network.listen(port, host, done);
+        network.listen(internals.port, internals.host, done);
     });
 
     it("should stop listening", function(done) {
@@ -27,8 +22,10 @@ describe("Network listening functions", function() {
 });
 
 describe("Network connect functions", function() {
-    var server = null;
-    var listenPort = 3333;
+
+    var server;
+    var network = new Network();
+    var socket;
 
     it("should connect to a peer", function(done) {
         server = net.createServer();
@@ -36,8 +33,8 @@ describe("Network connect functions", function() {
             socket = sock;
             done();
         });
-        server.listen(port, host, function() {
-            network.connect(port, host);
+        server.listen(internals.port, internals.host, function() {
+            network.connect(internals.port, internals.host);
         });
     });
 
@@ -50,17 +47,21 @@ describe("Network connect functions", function() {
 });
 
 describe("Peer Messages", function(done) {
+
+    var network = new Network(),
+        network2 = new Network(),
+        peer,
+        peer2;
+
     before(function(done) {
-        network = new Network();
-        network2 = new Network();
-        network2.listen(port + 1, host, done);
+        network2.listen(internals.port + 1, internals.host, done);
     });
 
     it("should send a hello message on connect", function(done) {
         network.once('message.hello', function(data) {
             done();
         });
-        network.connect(port + 1, host);
+        network.connect(internals.port + 1, internals.host);
     });
 
     it("should store the peer in a hash", function() {
@@ -100,16 +101,20 @@ describe("Peer Messages", function(done) {
 });
 
 describe("Message Validation", function(done) {
-    var lastData;
+
+    var lastData,
+    network,
+    socket;
+
     before(function(done) {
         network = new Network();
         socket = new net.Socket();
-        network.listen(port + 2, host, done);
+        network.listen(internals.port + 2, internals.host, done);
     });
 
-    it("should disconnect with reaosn 0x02 on invalid magic token", function(done) {
+    it("should disconnect with reason 0x02 on invalid magic token", function(done) {
         function sendBadSyncToken(socket) {
-            var message = [0x00, 0x00] ///hello
+            var message = [0x00, 0x00]; ///hello
             var BAD_SYNC_TOKEN = '22400892';
             var payload = RLP.encode(message);
             var len = new Buffer(4);
@@ -118,19 +123,18 @@ describe("Message Validation", function(done) {
             socket.write(formatedPayload);
         }
 
-        socket.on('data', function(data){
+        socket.on('data', function(data) {
             lastData = data;
         });
 
-        socket.on("connect", function(){
+        socket.on("connect", function() {
             sendBadSyncToken(socket);
         });
 
-        socket.on("close", function(){
+        socket.on("close", function() {
             assert.equal(lastData.toString('hex'), '2240089100000003c20102');
             done();
         });
-
-        socket.connect(port + 2, host);
+        socket.connect(internals.port + 2, internals.host);
     });
 });
