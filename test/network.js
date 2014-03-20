@@ -103,13 +103,15 @@ describe("Peer Messages", function(done) {
 describe("Message Validation", function(done) {
 
     var lastData,
-    network,
-    socket;
+        network = new Network(),
+        socket;
 
     before(function(done) {
-        network = new Network();
-        socket = new net.Socket();
         network.listen(internals.port + 2, internals.host, done);
+    });
+
+    beforeEach(function() {
+        socket = new net.Socket();
     });
 
     it("should disconnect with reason 0x02 on invalid magic token", function(done) {
@@ -120,6 +122,34 @@ describe("Message Validation", function(done) {
             var len = new Buffer(4);
             len.writeUInt32BE(payload.length, 0);
             var formatedPayload = Buffer.concat([new Buffer(BAD_SYNC_TOKEN, 'hex'), len, payload]);
+            socket.write(formatedPayload);
+        }
+
+        socket.on('data', function(data) {
+            lastData = data;
+        });
+
+        socket.once("connect", function() {
+            sendBadSyncToken(socket);
+        });
+
+        socket.once("close", function() {
+            socket.removeAllListeners();
+            assert.equal(lastData.toString('hex'), '2240089100000003c20102');
+            done();
+        });
+        socket.connect(internals.port + 2, internals.host);
+    });
+
+    it("should disconnect with reason 0x02 given an invalid hello", function(done) {
+
+        function sendBadSyncToken(socket) {
+            var message = [0x00, 0x00]; ///hello
+            var SYNC_TOKEN = '22400891';
+            var payload = RLP.encode(message);
+            var len = new Buffer(4);
+            len.writeUInt32BE(payload.length, 0);
+            var formatedPayload = Buffer.concat([new Buffer(SYNC_TOKEN, 'hex'), len, payload]);
             socket.write(formatedPayload);
         }
 
