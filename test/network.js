@@ -96,7 +96,14 @@ describe("Peer Messages", function(done) {
         network.once('message.peers', function() {
             done();
         });
-        peer.sendPeers();
+        peer2.sendPeers();
+    });
+
+    it("should send disconnect", function(done) {
+        network.once('message.disconnect', function() {
+            done();
+        });
+        peer2.sendDisconnect(0x08);
     });
 });
 
