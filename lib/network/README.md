@@ -10,6 +10,12 @@ Networking
         - [`network.stop([callback])`](#networkstopcallback)
         - [`network.getPeers()`](#networkgetpeers)
         - [`network.getPeerList()`](#networkgetpeerlist)
+        - [`network.broadcastPing([callback])`](#networkbroadcastpingcallback)
+        - [`network.broadcastGetPeers([callback])`](#networkbroadcastgetpeerscallback)
+        - [`network.broadcastGetChain(parents, count, [callback])`](#networkbroadcastgetchainparents-count-callback)
+        - [`network.broadcastTransactions(Txs, [callback])`](#networkbroadcasttransactionstxs-callback)
+        - [`network.broadcastBlocks(blocks, [callback])`](#networkbroadcastblocksblocks-callback)
+        - [`network.broadcastDisconnect(reason, [callback])`](#networkbroadcastdisconnectreason-callback)
     - [`Network` events](#network-events)
 - [`Peer`](#peer)
     - [`Peer` methods](#peer-methods)
@@ -24,6 +30,7 @@ Networking
         - [`peer.sendGetChain(parents, count,[callback])`](#peersendgetchainparents-count-callback)
         - [`peer.sendNotInChain([callback])`](#peersendnotinchaincallback)
         - [`peer.sendGetTransactions([callback])`](#peersendgettransactionscallback)
+    - [`Peer` events](#peer-events)
 - [Message Schema](#message-schema)
     -  [`peers`](#peers)
     -  [`getChain`](#getchain)
@@ -66,7 +73,18 @@ returns an array of connected peers a instances of the [peer object](#peer)
 #### `network.getPeerList()`
 returns an array of peers the server knows about but is not connected to. The server uses this list to replace peers that disconnect. 
 
-#### `network.broadcastTxs(Txs, [callback])` 
+#### `network.broadcastPing([callback])`
+Broadcast a ping to all of the peers.
+
+#### `network.broadcastGetPeers([callback])`
+Broadcast a get peers packet to all of the peers.
+
+#### `network.broadcastGetChain(parents, count, [callback])`
+Broadcast a get chain packet to all of the peers.
+- `parents` - an array of parent block hashes
+- `count` - the number of requested blocks
+
+#### `network.broadcastTransactions(Txs, [callback])` 
 broadcasts an array of transactions to the connected peers
 - `Txs` - an array of valid transactions
 
@@ -74,6 +92,9 @@ broadcasts an array of transactions to the connected peers
 broadcast an array of blocks to the connected peers
 - `blocks` - an array of blocks to broadcast
 
+#### `network.broadcastDisconnect(reason, [callback])`
+broadcast a disconnect packet to all of the peers
+- `reason` - the reason the client is disconnecting. See [`peer.sendDisconnect(reason, [callback])`](#peersenddisconnectreason-callback)
 
 ### `Network` events
 The Network object inherits from `Events.EventEmitter` and emits the following events.
@@ -142,6 +163,9 @@ Sends a request for part of a block chain TODO
 Sends not in chain message
 #### `peer.sendGetTransactions([callback])`
 Sends a request for transactions
+
+##`Peer` events
+peer events are the same as [`Network` events](#network-events)
 
 ## Message Schema
 After the payload is parsed it passed along to the events in form of these objects
