@@ -10,11 +10,15 @@ Networking
         - [`network.stop([callback])`](#networkstopcallback)
         - [`network.getPeers()`](#networkgetpeers)
         - [`network.getPeerList()`](#networkgetpeerlist)
+        - [`network.broadcastPing([callback])`](#networkbroadcastpingcallback)
+        - [`network.broadcastGetPeers([callback])`](#networkbroadcastgetpeerscallback)
+        - [`network.broadcastGetChain(parents, count, [callback])`](#networkbroadcastgetchainparents-count-callback)
+        - [`network.broadcastTransactions(Txs, [callback])`](#networkbroadcasttransactionstxs-callback)
+        - [`network.broadcastBlocks(blocks, [callback])`](#networkbroadcastblocksblocks-callback)
+        - [`network.broadcastDisconnect(reason, [callback])`](#networkbroadcastdisconnectreason-callback)
     - [`Network` events](#network-events)
-    - [`Network` event objects](#network-event-objects)
 - [`Peer`](#peer)
     - [`Peer` methods](#peer-methods)
-        - [`peer.sendMessage(message, [callback])`](#peersendmessagemessage-callback)
         - [`peer.sendHello([callback])`](#peersendhellocallback)
         - [`peer.sendDisconnect(reason, [callback])`](#peersenddisconnectreason-callback)
         - [`peer.sendPing([callback])`](#peersendpingcallback)
@@ -26,6 +30,14 @@ Networking
         - [`peer.sendGetChain(parents, count,[callback])`](#peersendgetchainparents-count-callback)
         - [`peer.sendNotInChain([callback])`](#peersendnotinchaincallback)
         - [`peer.sendGetTransactions([callback])`](#peersendgettransactionscallback)
+    - [`Peer` events](#peer-events)
+- [Message Schema](#message-schema)
+    -  [`peers`](#peers)
+    -  [`getChain`](#getchain)
+    -  [`blocks`](#blocks)
+    -  [`header`](#header)
+    -  [`transaction`](#transaction)
+    -  [`disconnect`](#disconnect)
 
 ## `Network`
 Implements Ethereum's [Wire Protocol](https://github.com/ethereum/wiki/wiki/%5BEnglish%5D-Wire-Protocol) and provides networking functions.
@@ -36,10 +48,10 @@ Creates new Network object with the following arguments
 
 ### `Network` options
 When creating a Network the following options can be used to configure its behavoir.
-- `blockchainQuerying` - TODO
-- `peerDiscovery` - TODO
-- `transactionRelaying` - TODO
-- `timeout` - TODO
+- `blockchainQuerying` - Determines whether of not this node will broadcast blocks
+- `peerDiscovery` - Determines whether or not this node will broadcast peers
+- `transactionRelaying` - Determines whether or not this node will broadcast transactions
+- `timeout` - The lenght of time in milliseconds to wait for a peer to response after connecting to it
 - `maxPeers` - The max number of peer the network will try to connect to.
 
 ### `Network` methods
@@ -61,7 +73,18 @@ returns an array of connected peers a instances of the [peer object](#peer)
 #### `network.getPeerList()`
 returns an array of peers the server knows about but is not connected to. The server uses this list to replace peers that disconnect. 
 
-#### `network.broadcastTxs(Txs, [callback])` 
+#### `network.broadcastPing([callback])`
+Broadcast a ping to all of the peers.
+
+#### `network.broadcastGetPeers([callback])`
+Broadcast a get peers packet to all of the peers.
+
+#### `network.broadcastGetChain(parents, count, [callback])`
+Broadcast a get chain packet to all of the peers.
+- `parents` - an array of parent block hashes
+- `count` - the number of requested blocks
+
+#### `network.broadcastTransactions(Txs, [callback])` 
 broadcasts an array of transactions to the connected peers
 - `Txs` - an array of valid transactions
 
@@ -69,64 +92,35 @@ broadcasts an array of transactions to the connected peers
 broadcast an array of blocks to the connected peers
 - `blocks` - an array of blocks to broadcast
 
-
+#### `network.broadcastDisconnect(reason, [callback])`
+broadcast a disconnect packet to all of the peers
+- `reason` - the reason the client is disconnecting. See [`peer.sendDisconnect(reason, [callback])`](#peersenddisconnectreason-callback)
 
 ### `Network` events
 The Network object inherits from `Events.EventEmitter` and emits the following events.
 
-- `'message'` - emitted when whenever the the network server gets a new message. It is provided with two objects `payload` - the RLP decoded buffer and `raw` the raw message.
-- `'message.hello'` - emitted on receiving a hello message. 
-- `'message.disconnect'` - emitted on receiving a disconnect message.
+- `'message.hello'` - emitted on receiving a hello packet. Provides a [`hello`](#hello) object as an argument.
+- `'message.disconnect'` - emitted on receiving a disconnect packet.Provides a [`disconnect`](#disconnect) object as an argument.
 - `'message.ping'` - emitted on receiving a ping
 - `'message.pong'` - emitted on receiving a pong
-- `'message.sendPeers'` - emitted on receiving a send a peers message
-- `'message.peers'` - emitted on receiving a peers message
-- `'message.transaction'` - emitted on receiving a transaction message
-- `'message.blocks'` - emitted on receiving a blocks message
-- `'message.getChain'` - emitted on receiving a get chain message
-- `'message.getNotInChain'` - emitted on receiving a not in chain message
-- `'message.getTransactions'` - emitted on receiving a get transactions message
+- `'message.sendPeers'` - emitted on receiving a send a peers packet. 
+- `'message.peers'` - emitted on receiving a peers packet. Provides a [`peers`](#peers) object as an argument.
+- `'message.transaction'` - emitted on receiving a transaction packet. Provides a [`transaction`](#transaction) object as an argument.
+- `'message.blocks'` - emitted on receiving a blocks packet. Provides a [`blocks`](#blocks) object as an argument.
+- `'message.getChain'` - emitted on receiving a get chain packet. Provides a [`getChain`](#getchain) object as an argument.
+- `'message.getNotInChain'` - emitted on receiving a not in chain packet
+- `'message.getTransactions'` - emitted on receiving a get transactions packet
  
 Each of the events are provided with the following arguments
 
-- `peer` - The [peer](#peer) that emitted the event
 - `message` - The decoded message parsed to an Object. [See event Message Objects](#event-message-objects)
 - `payload` - The RPL decoded payload
-- `raw` - The raw data from TCP
-    
-###  event message objects
-After the payload is parsed it passed along to the events in form of these objects
-#### `hello`
-- `protocolVersion` - the protocol version of the peer
-- `networkId` - should be 0 
-- `clientId` - Specifies the client software identity, as a human-readable string (e.g. "Ethereum(++)/1.0.0"). 
-- `capabilities` - pecifies the capabilities of the client as a set of boolean flags
-    - `blockchainQuerying`  
-    - `peerDiscovery`
-    - `transactionRelaying`
-- `port` -  specifies the port that the client is listening on 
-- `nodeId` - a 512-bit hash that identifies this node
-
-### `peers`
-The peers message is an array of object with the following fields
-- `ip` - The IP of the peer 
-- `port` - The port of the peer
-- `id` - The Id of the peer
-
-### `getChain`
-- `parents` - An array of parent block hashs
-- `count` - The number of request blocks
-
-### `disconnect`
-- `reason` - the reason for the disconnect
+- `peer` - The [peer](#peer) that emitted the event
 
 ## `Peer`
 The peer represents a peer on the ethereum network. Peer objects cannot be created directly.
 
 ### `Peer` methods
-#### `peer.sendMessage(message, [callback])`
-Encodes and sends a message
-- `message` - the message that is being sent  
 
 #### `peer.sendHello([callback])`
 Sends the hello message
@@ -169,3 +163,57 @@ Sends a request for part of a block chain TODO
 Sends not in chain message
 #### `peer.sendGetTransactions([callback])`
 Sends a request for transactions
+
+##`Peer` events
+peer events are the same as [`Network` events](#network-events)
+
+## Message Schema
+After the payload is parsed it passed along to the events in form of these objects
+#### `hello`
+- `protocolVersion` - the protocol version of the peer
+- `networkId` - should be 0 
+- `clientId` - Specifies the client software identity, as a human-readable string (e.g. "Ethereum(++)/1.0.0"). 
+- `capabilities` - pecifies the capabilities of the client as a set of boolean flags
+    - `blockchainQuerying`  
+    - `peerDiscovery`
+    - `transactionRelaying`
+- `port` -  specifies the port that the client is listening on 
+- `nodeId` - a 512-bit hash that identifies this node
+
+### `peers`
+The peers message is an array of object with the following fields
+- `ip` - The IP of the peer 
+- `port` - The port of the peer
+- `id` - The Id of the peer
+
+### `getChain`
+- `parents` - An array of parent block hashs
+- `count` - The number of request blocks
+
+### `blocks`
+- `header` - the block's [`header`](#header)
+- `transactionList` - an array of [`transactions`](#transaction) in the block
+- `uncleList` - an array of uncle [`headers`](#header)
+
+### `header`
+- `parentHash` 
+- `sha3UncleList` - sha3(rlp_encode(uncle_list))
+- `coinbase`
+- `stateRoot` - The root of a Merkle Patricia tree
+- `sha3transactionList` - sha3(rlp_encode(transaction_list))
+- `difficulty`
+- `timestamp`
+- `extraData`
+- `nonce`
+
+### `transaction`
+- `nonce`
+- `receivingAddress`
+- `value`
+- `data`
+- `v`
+- `r`
+- `s`
+
+### `disconnect`
+- `reason` - the reason for the disconnect

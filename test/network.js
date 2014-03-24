@@ -1,21 +1,19 @@
-var Network = require('../lib/network/network.js');
-var net = require('net');
-var assert = require('assert');
-var network = new Network();
-var network2 = new Network();
-
-//test port and host
-var port = 4445;
-var host = "localhost";
-
-var port2 = 22223;
-var host2 = "localhost";
+var Network = require('../lib/network/network.js'),
+    RLP = require('rlp'),
+    net = require('net'),
+    assert = require('assert'),
+    internals = {
+        //test port and host
+        port: 4445,
+        host: "localhost",
+    };
 
 describe("Network listening functions", function() {
 
+    var network = new Network();
+
     it("should listen", function(done) {
-        network.listen(port, host);
-            done();
+        network.listen(internals.port, internals.host, done);
     });
 
     it("should stop listening", function(done) {
@@ -24,18 +22,19 @@ describe("Network listening functions", function() {
 });
 
 describe("Network connect functions", function() {
-    var server = null;
-    var socket = null;
-    var listenPort = 3333;
+
+    var server;
+    var network = new Network();
+    var socket;
 
     it("should connect to a peer", function(done) {
         server = net.createServer();
-        server.once('connection', function(sock){
+        server.once('connection', function(sock) {
             socket = sock;
             done();
         });
-        server.listen(port, host, function() {
-            network.connect(port, host);
+        server.listen(internals.port, internals.host, function() {
+            network.connect(internals.port, internals.host);
         });
     });
 
@@ -48,23 +47,131 @@ describe("Network connect functions", function() {
 });
 
 describe("Peer Messages", function(done) {
-    before(function(){
-    
-        network = new Network();
-        network2 = new Network();
-        network2.listen(port + 1, host);
-    
+
+    var network = new Network(),
+        network2 = new Network(),
+        peer,
+        peer2;
+
+    before(function(done) {
+        network2.listen(internals.port + 1, internals.host, done);
     });
 
     it("should send a hello message on connect", function(done) {
-        network.on('message.hello', function(data) {
+        network.once('message.hello', function(data) {
             done();
         });
-        network.connect(port + 1, host);
+        network.connect(internals.port + 1, internals.host);
     });
 
     it("should store the peer in a hash", function() {
         var peers = network2.getPeers();
         assert(peers.length, 1);
+        peer2 = peers[0];
+    });
+
+    it("should send a ping", function(done) {
+        network.once('message.ping', function() {
+            done();
+        });
+        peer2.sendPing();
+    });
+
+    it("should send a pong", function(done) {
+        network.once('message.pong', function() {
+            done();
+        });
+        peer = network.getPeers()[0];
+        peer.sendPing();
+    });
+
+    it("should send get peers", function(done) {
+        network.once('message.getPeers', function() {
+            done();
+        });
+        peer2.sendGetPeers();
+    });
+
+    it("should send peers", function(done) {
+        network.once('message.peers', function() {
+            done();
+        });
+        peer2.sendPeers();
+    });
+
+    it("should send disconnect", function(done) {
+        network.once('message.disconnect', function() {
+            done();
+        });
+        peer2.sendDisconnect(0x08);
+    });
+});
+
+describe("Message Validation", function(done) {
+
+    var lastData,
+        network = new Network(),
+        socket;
+
+    before(function(done) {
+        network.listen(internals.port + 2, internals.host, done);
+    });
+
+    beforeEach(function() {
+        socket = new net.Socket();
+    });
+
+    it("should disconnect with reason 0x02 on invalid magic token", function(done) {
+        function sendBadSyncToken(socket) {
+            var message = [0x00, 0x00]; ///hello
+            var BAD_SYNC_TOKEN = '22400892';
+            var payload = RLP.encode(message);
+            var len = new Buffer(4);
+            len.writeUInt32BE(payload.length, 0);
+            var formatedPayload = Buffer.concat([new Buffer(BAD_SYNC_TOKEN, 'hex'), len, payload]);
+            socket.write(formatedPayload);
+        }
+
+        socket.on('data', function(data) {
+            lastData = data;
+        });
+
+        socket.once("connect", function() {
+            sendBadSyncToken(socket);
+        });
+
+        socket.once("close", function() {
+            socket.removeAllListeners();
+            assert.equal(lastData.toString('hex'), '2240089100000003c20102');
+            done();
+        });
+        socket.connect(internals.port + 2, internals.host);
+    });
+
+    it("should disconnect with reason 0x02 given an invalid hello", function(done) {
+
+        function sendBadSyncToken(socket) {
+            var message = [0x00, 0x00]; ///hello
+            var SYNC_TOKEN = '22400891';
+            var payload = RLP.encode(message);
+            var len = new Buffer(4);
+            len.writeUInt32BE(payload.length, 0);
+            var formatedPayload = Buffer.concat([new Buffer(SYNC_TOKEN, 'hex'), len, payload]);
+            socket.write(formatedPayload);
+        }
+
+        socket.on('data', function(data) {
+            lastData = data;
+        });
+
+        socket.on("connect", function() {
+            sendBadSyncToken(socket);
+        });
+
+        socket.on("close", function() {
+            assert.equal(lastData.toString('hex'), '2240089100000003c20102');
+            done();
+        });
+        socket.connect(internals.port + 2, internals.host);
     });
 });
