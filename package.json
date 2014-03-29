@@ -20,6 +20,9 @@
   "scripts": {
     "test": "mocha"
   },
+  "bin": {
+    "ethereum": "./bin/ethereum.js"
+  },
   "dependencies": {
     "bignum": "=0.6.1",
     "buffertools": ">=1.0.3",
