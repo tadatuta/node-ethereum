@@ -6,40 +6,54 @@ var Ethereum = require('../'),
 
 internals.network = new Network();
 
-internals.network.on('message.hello', function(hello, payload) {
-    console.log("hello from:" + hello.clientId);
-    console.log("at:" + hello.ip + " port:" + hello.port);
+internals.network.on('connecting', function(socket, port, host){
+    console.log('connecting to ' + host + ":"+port );
 });
 
-internals.network.on('message.transactions', function(transactions) {
-    console.log('got a transactions');
-    console.log(transactions);
+internals.network.on('closing', function(peer){
+    console.log('closing: ' + peer.internalId );
+});
+
+internals.network.on('message.hello', function(hello) {
+    console.log("hello from:" + hello.clientId + " at:" + hello.ip + " port:" + hello.port);
+});
+
+internals.network.on('message.transactions', function(transactions, peer) {
+    console.log('from: '+ peer.internalId + ' got transactions');
     //TODO: check if transaction is in the DB
     //check if the transaction is valid
     //push tx to txlist
     //save in db
 });
 
-internals.network.on('message.blocks', function(blocks) {
-    console.log('got a block');
+internals.network.on('message.peers', function(peers, peer) {
+    console.log('from: '+ peer.internalId + ' got peers');
+});
+
+internals.network.on('message.getPeers', function(peers, peer) {
+    console.log('from: '+ peer.internalId + ' got get peers');
+});
+
+internals.network.on('message.blocks', function(blocks, peer) {
+    console.log( 'from: '+ peer.internalId + 'got blocks');
     //TODO: check if block is in DB
 });
 
-internals.network.on('message.getChain', function() {
-    console.log("get chian");
+internals.network.on('message.getChain', function(message, peer) {
+    console.log('from: '+ peer.internalId + "got get chain");
 });
 
-internals.network.on('message.notInChain', function() {
-    console.log('got not in chain');
+internals.network.on('message.notInChain', function(message, peer) {
+    console.log('from: '+ peer.internalId + 'got not in chain');
 });
 
-internals.network.on('message.getTransactions', function() {
-    console.log('request for transactions');
+internals.network.on('message.getTransactions', function(message, peer) {
+    console.log('from: '+ peer.internalId + 'got request for transactions');
 });
 
-internals.network.on('message.disconnect', function(message) {
-    console.log(message);
+internals.network.on('message.disconnect', function(message, peer) {
+    console.log('from: '+ peer.internalId + 'got dissconnected:' + message.reason);
 });
 
 internals.network.listen(30303, "0.0.0.0");
-//internals.network.connect(30303, "54.201.28.117");
+internals.network.connect(30303, "54.201.28.117");

@@ -105,6 +105,15 @@ describe("Peer Messages", function(done) {
         });
         peer2.sendDisconnect(0x08);
     });
+
+    it("should be not send anymore packets after dissconect", function(done) {
+        network.once('message.ping', function() {
+            throw("packet was sent");
+        });
+        peer2.sendPing();
+        done();
+    });
+
 });
 
 describe("Message Validation", function(done) {
