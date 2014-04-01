@@ -5,13 +5,11 @@ var Network = require('../lib/network/network.js'),
     internals = {
         //test port and host
         port: 4445,
-        host: "localhost",
+        host: "localhost"
     };
 
 describe("Network listening functions", function() {
-
     var network = new Network();
-
     it("should listen", function(done) {
         network.listen(internals.port, internals.host, done);
     });
