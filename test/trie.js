@@ -27,5 +27,6 @@ describe('Should update:', function () {
   it('should update the trie with value provided.', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('dog', LONG_VALUE);
+    console.log(trie.root);
   })
 });
