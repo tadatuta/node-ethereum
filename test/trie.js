@@ -15,8 +15,6 @@ var fakeDB = {
   }
 };
 
-}
-
 describe('Type checks:', function () {
   it('should type check trie.', function () {
     var n = new Trie(fakeDB, '', '');
