@@ -4,8 +4,15 @@ var assert = require('assert');
 
 describe('Type checks:', function () {
   it('should type check node.', function () {
-    var n = new Node('key', 'value', true);
-    assert(Util.isNode(n));
+    var n1 = new Node('str', 'value', true);
+    var n2 = new Node('int', 5, true);
+    var n3 = new Node('buf', new Buffer('value'), true);
+    var n4 = new Node('buf', ['value'], true);
+    assert(Util.isNode(n1));
+    assert(Util.isNode(n2));
+    assert(Util.isNode(n3));
+    assert(Util.isNode(n4));
+
   })
 });
 
