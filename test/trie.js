@@ -8,7 +8,15 @@ var fakeDB = {
     this.db[key] = value;
   },
   get: function (key) {
-    return this.db[key] || null;
+    if (this.db[key]) {
+      return {
+        data: this.db[key]
+      };
+    } else {
+      return {
+        error: 'value associated with key: ' + key + ' doesnt exist'
+      };
+    }
   },
   del: function (key) {
     delete this.db[key];
@@ -28,5 +36,6 @@ describe('Should update:', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('dog', LONG_VALUE);
     console.log(trie.root);
+    trie.update('test', LONG_VALUE);
   })
 });
