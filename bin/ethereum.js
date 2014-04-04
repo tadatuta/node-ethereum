@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 
+var argv = require('minimist')(process.argv.slice(2));
+
+console.dir(argv);
+
 var Ethereum = require('../'),
     Network = Ethereum.Network,
     internals = {};
 
-internals.network = new Network();
+internals.network = new Network({publicIp: argv["public-ip"]});
 
 internals.network.on('connecting', function(socket, port, host){
     console.log(host + ":"+port + ' connecting');
