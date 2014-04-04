@@ -15,6 +15,7 @@ internals.network.on('closing', function(peer){
 });
 
 internals.network.on('message.hello', function(hello) {
+    console.log(hello);
     console.log(hello.ip + ":" + hello.port + " hello");
 });
 
@@ -27,6 +28,7 @@ internals.network.on('message.transactions', function(transactions, peer) {
 });
 
 internals.network.on('message.peers', function(peers, peer) {
+    console.log(peers);
     console.log( peer.internalId + ' got peers');
 });
 
