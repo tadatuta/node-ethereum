@@ -2,10 +2,9 @@
 
 var argv = require('minimist')(process.argv.slice(2));
 
-console.dir(argv);
-
 var Ethereum = require('../'),
     Network = Ethereum.Network,
+    DB = Ethereum.DB,
     internals = {};
 
 internals.network = new Network({publicIp: argv["public-ip"]});
@@ -19,7 +18,6 @@ internals.network.on('closing', function(peer){
 });
 
 internals.network.on('message.hello', function(hello) {
-    console.log(hello);
     console.log(hello.ip + ":" + hello.port + " hello");
 });
 
@@ -41,6 +39,9 @@ internals.network.on('message.getPeers', function(peers, peer) {
 });
 
 internals.network.on('message.blocks', function(blocks, peer) {
+    for (var i=0; i < blocks.length; i++) {
+        //db.put("block:" + block.header.number);
+    }
     console.log(peer.internalId + ' got blocks');
     //TODO: check if block is in DB
 });
@@ -58,7 +59,7 @@ internals.network.on('message.getTransactions', function(message, peer) {
 });
 
 internals.network.on('message.disconnect', function(message, peer) {
-    console.log(peer.internalId + ' got dissconnected:' + message.reason);
+    console.log(peer.internalId + ' got disconnected:' + message.reason);
 });
 
 internals.network.listen(30303, "0.0.0.0");
