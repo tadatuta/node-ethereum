@@ -74,3 +74,20 @@ describe('should undo:', function () {
 
   });
 });
+
+describe('should cache nodes:', function () {
+  //prep tree
+  var trie = new Trie(fakeDB, '', '');
+  it('cache nodes size should increase when we update trie.', function () {
+    trie.update("dog", LONG_VALUE);
+    var size = Util.size(trie.cache.nodes);
+    assert(size > 0);
+
+  });
+  it('cache nodes size should stay the same when we undo cache', function () {
+    trie.cache.undo();
+    var size = Util.size(trie.cache.nodes);
+    assert(size === 0);
+
+  });
+});
