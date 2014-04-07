@@ -20,6 +20,12 @@ var fakeDB = {
   },
   del: function (key) {
     delete this.db[key];
+  },
+  reset: function () {
+    this.db = {};
+  },
+  isEmpty: function () {
+    return Util.isEmpty(this.db)
   }
 };
 const LONG_VALUE = "1234567890abcdefghijklmnopqrstuvwxxzABCEFGHIJKLMNOPQRSTUVWXYZ";
@@ -28,7 +34,7 @@ describe('Type checks:', function () {
   it('should type check trie.', function () {
     var n = new Trie(fakeDB, '', '');
     assert(Util.isTrie(n));
-  })
+  });
 });
 
 describe('Should update:', function () {
@@ -37,5 +43,17 @@ describe('Should update:', function () {
     trie.update('dog', LONG_VALUE);
     console.log(trie.root);
     trie.update('test', LONG_VALUE);
-  })
+    fakeDB.reset();
+  });
+});
+
+describe('should sync:', function () {
+  it('should sync and update the db accordingly.', function () {
+    var trie = new Trie(fakeDB, '', '');
+    trie.update("dog", LONG_VALUE)
+    assert(fakeDB.isEmpty())
+    //sync
+    trie.cache.commit()
+    assert(!fakeDB.isEmpty())
+  });
 });
