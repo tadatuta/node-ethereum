@@ -26,6 +26,9 @@ var fakeDB = {
   },
   isEmpty: function () {
     return Util.isEmpty(this.db)
+  },
+  size: function () {
+    return Util.size(this.db);
   }
 };
 const LONG_VALUE = "1234567890abcdefghijklmnopqrstuvwxxzABCEFGHIJKLMNOPQRSTUVWXYZ";
@@ -50,10 +53,24 @@ describe('Should update:', function () {
 describe('should sync:', function () {
   it('should sync and update the db accordingly.', function () {
     var trie = new Trie(fakeDB, '', '');
-    trie.update("dog", LONG_VALUE)
-    assert(fakeDB.isEmpty())
+    trie.update("dog", LONG_VALUE);
+    assert(fakeDB.isEmpty());
     //sync
-    trie.cache.commit()
-    assert(!fakeDB.isEmpty())
+    trie.cache.commit();
+    assert(!fakeDB.isEmpty());
+  });
+});
+
+describe('should undo:', function () {
+  it('should undo and update the db accordingly.', function () {
+    var trie = new Trie(fakeDB, '', '');
+    trie.update("dog", LONG_VALUE);
+    trie.cache.commit();
+    var size = fakeDB.size();
+    //adding something else
+    trie.update("test", LONG_VALUE);
+    trie.cache.undo();
+    assert(size == fakeDB.size());
+
   });
 });
