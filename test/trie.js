@@ -54,10 +54,10 @@ describe('Should update:', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('dog', LONG_VALUE);
     var result = trie.get('dog');
-    console.log('results:' + result);
+    console.log('get dog results:' + result);
     trie.update('dog', LONG_VALUE + 'yolo');
     result = trie.get('dog');
-    console.log('results:' + result);
+    console.log('get dog results:' + result);
     // assert(result == LONG_VALUE);
   });
 });
