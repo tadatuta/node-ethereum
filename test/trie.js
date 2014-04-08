@@ -41,18 +41,31 @@ describe('Type checks:', function () {
 });
 
 describe('Should update:', function () {
+  afterEach(fakeDB.reset);
+
   it('should update the trie with value provided.', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('dog', LONG_VALUE);
     console.log(trie.root);
     trie.update('test', LONG_VALUE);
-    fakeDB.reset();
+  });
+
+  it('should do replace when update with same key', function () {
+    var trie = new Trie(fakeDB, '', '');
+    trie.update('dog', LONG_VALUE);
+    var result = trie.get('dog');
+    console.log('results:' + result);
+    trie.update('dog', LONG_VALUE + 'yolo');
+    result = trie.get('dog');
+    console.log('results:' + result);
+    // assert(result == LONG_VALUE);
   });
 });
 
 describe('should sync:', function () {
+  afterEach(fakeDB.reset);
+  var trie = new Trie(fakeDB, '', '');
   it('should sync and update the db accordingly.', function () {
-    var trie = new Trie(fakeDB, '', '');
     trie.update("dog", LONG_VALUE);
     assert(fakeDB.isEmpty());
     //sync
@@ -62,8 +75,9 @@ describe('should sync:', function () {
 });
 
 describe('should undo:', function () {
+  afterEach(fakeDB.reset);
+  var trie = new Trie(fakeDB, '', '');
   it('should undo and update the db accordingly.', function () {
-    var trie = new Trie(fakeDB, '', '');
     trie.update("dog", LONG_VALUE);
     trie.cache.commit();
     var size = fakeDB.size();
@@ -71,23 +85,20 @@ describe('should undo:', function () {
     trie.update("test", LONG_VALUE);
     trie.cache.undo();
     assert(size == fakeDB.size());
-
   });
 });
 
 describe('should cache nodes:', function () {
-  //prep tree
+  after(fakeDB.reset);
   var trie = new Trie(fakeDB, '', '');
   it('cache nodes size should increase when we update trie.', function () {
     trie.update("dog", LONG_VALUE);
     var size = Util.size(trie.cache.nodes);
     assert(size > 0);
-
   });
   it('cache nodes size should stay the same when we undo cache', function () {
     trie.cache.undo();
     var size = Util.size(trie.cache.nodes);
     assert(size === 0);
-
   });
 });
