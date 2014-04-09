@@ -60,4 +60,17 @@ describe('Compact decoding:', function () {
     assert.deepEqual(exp, res);
   });
 
+  it('should handle odd case with terminator', function () {
+    var testBuffer = new Buffer([32, 15, 28, 184]);
+    var exp = [0, 15, 1, 12, 11, 8, 16];
+    var res = Util.compactDecode(testBuffer);
+    assert.deepEqual(exp, res);
+  });
+  it('should handle even case with terminator', function () {
+    var testBuffer = new Buffer([63, 28, 184]);
+    var exp = [15, 1, 12, 11, 8, 16];
+    var res = Util.compactDecode(testBuffer);
+    assert.deepEqual(exp, res);
+  });
+
 });
