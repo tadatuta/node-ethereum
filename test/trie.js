@@ -40,7 +40,7 @@ describe('Type checks:', function () {
   });
 });
 
-describe('Should update and get:', function () {
+describe('Should be able to update and get trie:', function () {
   afterEach(fakeDB.reset);
 
   it('should update the trie with value provided.', function () {
