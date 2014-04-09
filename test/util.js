@@ -22,6 +22,13 @@ describe('Compact encoding:', function () {
     var res = Util.compactEncode(testBuffer).toJSON();
     assert.deepEqual([0, 1, 35, 69], res);
   });
+  it('fucks it up', function () {
+    var test = [6, 4, 6, 15, 6, 7, 16];
+    var res = Util.compactEncode(test);
+    console.log(res.toJSON());
+    var d = Util.compactDecode(res);
+    console.log(d);
+  });
 
 });
 
