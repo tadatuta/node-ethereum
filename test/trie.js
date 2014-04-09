@@ -47,7 +47,6 @@ describe('Should update and get:', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('dog', LONG_VALUE);
     var result = trie.get('dog');
-    console.log('get dog results:' + result);
     assert(Util.deepEqual(result, LONG_VALUE));
   });
 
