@@ -22,12 +22,16 @@ describe('Compact encoding:', function () {
     var res = Util.compactEncode(testBuffer).toJSON();
     assert.deepEqual([0, 1, 35, 69], res);
   });
-  it('fucks it up', function () {
+  it('should handle odd case with terminator', function () {
     var test = [6, 4, 6, 15, 6, 7, 16];
-    var res = Util.compactEncode(test);
-    console.log(res.toJSON());
-    var d = Util.compactDecode(res);
-    console.log(d);
+    var res = Util.compactEncode(test).toJSON();
+    assert.deepEqual([32, 100, 111, 103], res);
+  });
+
+  it('should handle even case with terminator', function () {
+    var test = [15, 1, 12, 11, 8, 16];
+    var res = Util.compactEncode(test).toJSON();
+    assert.deepEqual([63, 28, 184], res);
   });
 
 });
