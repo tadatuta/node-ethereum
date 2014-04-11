@@ -84,22 +84,22 @@ const LONG_VALUE = "1234567890abcdefghijklmnopqrstuvwxxzABCEFGHIJKLMNOPQRSTUVWXY
 describe('Should be able to update and get trie:', function () {
   afterEach(fakeDB.reset);
 
-  // it('should update the trie with value provided.', function () {
-  //   var trie = new Trie(fakeDB, '', '');
-  //   trie.update('dog', LONG_VALUE);
-  //   var result = trie.get('dog');
-  //   assert(Util.deepEqual(result, LONG_VALUE));
-  // });
-
-  it('should work for official universal trie test #1', function () {
+  it('should update the trie with value provided.', function () {
     var trie = new Trie(fakeDB, '', '');
-    var exp = 'd85f9267d7ed5767fb1b48defa8eb20a1c007a87a07588135a74b40b55de2e67';
-    trie.update('doe', 'reindeer');
-    trie.update('dog', 'puppy');
-    trie.update('dogglesworth', 'cat');
-    console.log('official trie test #1 root:' + trie.root);
-    assert(Util.deepEqual(exp, trie.root));
+    trie.update('dog', LONG_VALUE);
+    var result = trie.get('dog');
+    assert(Util.deepEqual(result, LONG_VALUE));
   });
+
+  // it('should work for official universal trie test #1', function () {
+  //   var trie = new Trie(fakeDB, '', '');
+  //   var exp = 'd85f9267d7ed5767fb1b48defa8eb20a1c007a87a07588135a74b40b55de2e67';
+  //   trie.update('doe', 'reindeer');
+  //   trie.update('dog', 'puppy');
+  //   trie.update('dogglesworth', 'cat');
+  //   console.log('official trie test #1 root:' + trie.root);
+  //   assert(Util.deepEqual(exp, trie.root));
+  // });
 
   // it('should work for official universal trie test #2', function () {
   //   var trie = new Trie(fakeDB, '', '');
@@ -129,10 +129,10 @@ describe('Should be able to update and get trie:', function () {
 //     var trie = new Trie(fakeDB, '', '');
 //     trie.update('cat', LONG_VALUE);
 //     var expected = trie.root;
-//     console.log(expected);
+//     console.log('expected: ', expected);
 //     trie.update('dog', LONG_VALUE);
 //     trie.del('dog');
-//     console.log(trie.root);
+//     console.log('actual: ', trie.root);
 //     assert(Util.deepEqual(expected, trie.root));
 //   });
 // });
