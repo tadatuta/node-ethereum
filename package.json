@@ -20,6 +20,9 @@
   "scripts": {
     "test": "mocha"
   },
+  "bin": {
+    "ethereum": "./bin/ethereum.js"
+  },
   "dependencies": {
     "bignum": "=0.6.1",
     "buffertools": ">=1.0.3",
@@ -32,7 +35,8 @@
     "underscore": "~1.6.0",
     "mkdirp": "~0.3.5",
     "rlp": "0.0.1",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "minimist": "0.0.8"
   },
   "devDependencies": {
     "mocha": ">=1.15.1",
