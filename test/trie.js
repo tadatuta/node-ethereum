@@ -108,15 +108,8 @@ describe('Should be able to delete nodes from trie:', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('cat', LONG_VALUE);
     var expected = trie.root;
-    trie.get('cat');
     trie.update('dog', LONG_VALUE);
-    var postDog = trie.root;
-    // trie.get('dog');
     trie.del('dog');
-    console.log('expected: ', expected);
-    console.log('after dog: ', postDog);
-    console.log('actual: ', trie.root);
-
     assert(Util.deepEqual(expected, trie.root));
   });
 });
