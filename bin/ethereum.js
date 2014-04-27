@@ -39,6 +39,7 @@ internals.network.on('message.getPeers', function(peers, peer) {
 });
 
 internals.network.on('message.blocks', function(blocks, peer) {
+
     for (var i=0; i < blocks.length; i++) {
         //db.put("block:" + block.header.number);
     }
@@ -63,4 +64,4 @@ internals.network.on('message.disconnect', function(message, peer) {
 });
 
 internals.network.listen(30303, "0.0.0.0");
-internals.network.connect(30303, "54.201.28.117");
+//internals.network.connect(30303, "54.204.10.41");
