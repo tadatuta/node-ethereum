@@ -1,4 +1,5 @@
 var Block = require('../lib/schema/block.js'),
+    assert = require('assert'),
     //v1
     rawBlock = [
         //block header
@@ -61,31 +62,23 @@ var Block = require('../lib/schema/block.js'),
         ],
         //uncle list
         [],
-    ]
+    ];
 
-    describe.skip('Block Functions', function() {
 
-        it('should parse a block', function() {
-            var block = new Block(rawBlock);
-            assert(block.header.parentHash === "e3c3dabf59466a0ec0b3639d2852bd862f01bfaf9c9b4a02df21fc1e3299882b");
-        });
+describe('Block Functions', function() {
+    var block;
 
-        it('should serialize data', function() {
-            var raw = block.encode();
-            assert.deepEqual(raw, rawBlock);
-        });
-
-        it('should create a hash', function() {
-            var hash = block.hash();
-        });
-
-        it('should generate a genisis block', function() {
-            var block = new Block();
-            block.genesis();
-        });
-
-        it('shouldn\'t accept a badly formed block', function() {
-
-        });
-
+    it('should parse a block', function() {
+        block = new Block(rawBlock);
+        assert(block.header.parentHash.toString('hex') === "e3c3dabf59466a0ec0b3639d2852bd862f01bfaf9c9b4a02df21fc1e3299882b");
     });
+
+    it('should serialize data', function() {
+        var raw = block.serialize();
+        assert.deepEqual(raw, rawBlock);
+    });
+
+    it('should create a hash', function() {
+        var hash = block.hash();
+    });
+});
