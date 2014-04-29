@@ -3,10 +3,11 @@ var Util = require('../lib/util');
 
 describe('Sha3 256 bits:', function () {
   var expectedHash = "7c5ea36004851c764c44143b1dcb59679b11c9a68e5f41497f6cf3d480715331";
-  var sha3Hash = Util.sha3('HelloWorld');
+  var sha3Hash = Util.sha3(new Buffer('HelloWorld'));
   it('should equal expected hash string',
     function () {
-      assert.equal(expectedHash, sha3Hash);
+      //Occasionally this fucks up, I blame it on V8
+      assert.deepEqual(sha3Hash, expectedHash);
     });
 });
 
@@ -14,7 +15,7 @@ describe('Compact encoding:', function () {
   it('should handle even case.', function () {
     var testBuffer = [1, 2, 3, 4, 5];
     var res = Util.compactEncode(testBuffer).toJSON();
-    assert.deepEqual([17, 35, 69], res);
+    assert.deepEqual(res, [17, 35, 69]);
   });
 
   it('should handle odd case', function () {
