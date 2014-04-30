@@ -24,23 +24,24 @@
     "ethereum": "./bin/ethereum.js"
   },
   "dependencies": {
-    "async": "~0.2.10",
     "bignum": "=0.6.1",
-    "binary": ">=0.2.5 <0.3",
     "buffertools": ">=1.0.3",
+    "binary": ">=0.2.5 <0.3",
+    "winston": ">=0.2.6",
     "leveldown": ">=0.2.1",
     "levelup": "~0.18.2",
-    "minimist": "0.0.8",
-    "mkdirp": "~0.3.5",
+    "crypto-js": "~3.1.2-2",
     "path": "~0.4.9",
-    "rlp": "0.0.1",
-    "sha3": "^1.0.0",
     "underscore": "~1.6.0",
-    "winston": ">=0.2.6"
+    "mkdirp": "~0.3.5",
+    "rlp": "0.0.2",
+    "async": "~0.2.10",
+    "minimist": "0.0.8",
+    "sha3": "~1.0.0"
   },
   "devDependencies": {
-    "docker": "~0.2.10",
-    "mocha": ">=1.15.1"
+    "mocha": ">=1.15.1",
+    "docker": "~0.2.10"
   },
   "licenses": "MIT"
 }
