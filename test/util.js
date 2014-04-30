@@ -1,13 +1,40 @@
 var assert = require('assert');
 var Util = require('../lib/util');
 
-describe('Sha3 256 bits:', function () {
+// describe('Sha3 256 bits:', function () {
+//   var expectedHash = "7c5ea36004851c764c44143b1dcb59679b11c9a68e5f41497f6cf3d480715331";
+//   var sha3Hash = Util.sha3(new Buffer('HelloWorld'));
+//   it('should equal expected hash string',
+//     function () {
+//       //Occasionally this fucks up, I blame it on V8
+//       assert.deepEqual(sha3Hash, expectedHash);
+//     });
+// });
+
+//ball park benchmark
+describe('Sha3 256 bits benchmark:', function () {
   var expectedHash = "7c5ea36004851c764c44143b1dcb59679b11c9a68e5f41497f6cf3d480715331";
-  var sha3Hash = Util.sha3(new Buffer('HelloWorld'));
+  var start, end, time;
+  start = new Date().getTime();
+  var sha3Hash = Util.sha3Keccak(new Buffer('HelloWorld'));
   it('should equal expected hash string',
     function () {
       //Occasionally this fucks up, I blame it on V8
       assert.deepEqual(sha3Hash, expectedHash);
+      end = new Date().getTime();
+      time = end - start;
+      console.log('Keccak lib - Execution time: ' + time);
+
+    });
+  sha3Hash = Util.sha3(new Buffer('HelloWorld'));
+  it('should equal expected hash string',
+    function () {
+      //Occasionally this fucks up, I blame it on V8
+      assert.deepEqual(sha3Hash, expectedHash);
+      end = new Date().getTime();
+      time = end - start;
+      console.log('Sha3 lib - Execution time: ' + time);
+
     });
 });
 

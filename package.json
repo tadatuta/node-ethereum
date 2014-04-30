@@ -36,12 +36,13 @@
     "mkdirp": "~0.3.5",
     "path": "~0.4.9",
     "rlp": "0.0.1",
+    "sha3": "^1.0.0",
     "underscore": "~1.6.0",
     "winston": ">=0.2.6"
   },
   "devDependencies": {
-    "mocha": ">=1.15.1",
-    "docker": "~0.2.10"
+    "docker": "~0.2.10",
+    "mocha": ">=1.15.1"
   },
   "licenses": "MIT"
 }
