@@ -8,7 +8,7 @@ Node implementation of [Ethereum](http://Ethereum.org)
 ####Install
 `npm install`
 
-`npm install -g docker`
+`npm install -g docker` if you want developer-friendly auto-generated doc
 
 * On linux, you may have to do `sudo aptitude install g++` (I'm on Mint 13)
 
@@ -25,4 +25,4 @@ Node implementation of [Ethereum](http://Ethereum.org)
 [See this wiki](https://github.com/josephyzhou/node-ethereum/wiki/TODO)
 
 ####License
-MIT + [Rude License](https://github.com/josephyzhou/Rude-Software-License/blob/master/license.md)
+MIT
