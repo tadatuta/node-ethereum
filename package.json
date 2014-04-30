@@ -24,19 +24,20 @@
     "ethereum": "./bin/ethereum.js"
   },
   "dependencies": {
+    "async": "~0.2.10",
     "bignum": "=0.6.1",
-    "buffertools": ">=1.0.3",
     "binary": ">=0.2.5 <0.3",
-    "winston": ">=0.2.6",
+    "buffertools": ">=1.0.3",
+    "crypto-js": "~3.1.2-2",
+    "keccak-hash": "0.0.4",
     "leveldown": ">=0.2.1",
     "levelup": "~0.18.2",
-    "crypto-js": "~3.1.2-2",
-    "path": "~0.4.9",
-    "underscore": "~1.6.0",
+    "minimist": "0.0.8",
     "mkdirp": "~0.3.5",
+    "path": "~0.4.9",
     "rlp": "0.0.1",
-    "async": "~0.2.10",
-    "minimist": "0.0.8"
+    "underscore": "~1.6.0",
+    "winston": ">=0.2.6"
   },
   "devDependencies": {
     "mocha": ">=1.15.1",
