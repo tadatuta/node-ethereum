@@ -28,8 +28,6 @@
     "bignum": "=0.6.1",
     "binary": ">=0.2.5 <0.3",
     "buffertools": ">=1.0.3",
-    "crypto-js": "~3.1.2-2",
-    "keccak-hash": "0.0.4",
     "leveldown": ">=0.2.1",
     "levelup": "~0.18.2",
     "minimist": "0.0.8",
