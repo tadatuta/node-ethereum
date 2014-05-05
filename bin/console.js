@@ -28,13 +28,13 @@ list.add('network', 'Networking Functions');
 list.add('chain', 'Chain Functions');
 //util menu
 utilList.add('byteLength', 'Byte Length');
-utilList.add('formatBufferArray', 'Format Buffer Array');
 utilList.add('sha3', "SHA3");
 utilList.add('compactEncode', "Compact Encode");
 utilList.add('compactDecode', "Compact Decode");
 utilList.add('compactHexDecode', "Compact Hex Decode");
 //trie menu
-trieList.add('get', 'Get Value');
+trieList.add('get', 'Get Value From Trie');
+trieList.add('root', 'Root of Trie');
 //networking menu
 netList.add('getPeers', 'Get Peer List');
 //chain menu
