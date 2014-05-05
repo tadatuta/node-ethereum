@@ -63,6 +63,7 @@ list.on('keypress', function (key, id) {
         }
       });
       break;
+      //switches for trie menu
     case 'trie':
       trieList.start();
       trieList.on('keypress', function (key, id) {
@@ -79,6 +80,7 @@ list.on('keypress', function (key, id) {
         }
       });
       break;
+      //switches for network menu
     case 'network':
       netList.start();
       netList.on('keypress', function (key, id) {
@@ -95,6 +97,7 @@ list.on('keypress', function (key, id) {
         }
       });
       break;
+      //switches for chain menu
     case 'chain':
       chainList.start();
       chainList.on('keypress', function (key, id) {
