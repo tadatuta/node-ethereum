@@ -17,6 +17,11 @@
     "email": "josephyzhou@gmail.com",
     "url": "https://github.com/josephyzhou"
   },
+  "contributors": [{
+    "name": "Martin Becze",
+    "email": "mjbecze@gmail.com",
+    "url": "https://github.com/wanderer"
+  }],
   "scripts": {
     "test": "mocha"
   },
