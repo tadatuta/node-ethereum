@@ -35,7 +35,6 @@
     "winston": ">=0.2.6",
     "leveldown": ">=0.2.1",
     "levelup": "~0.18.2",
-    "crypto-js": "~3.1.2-2",
     "path": "~0.4.9",
     "underscore": "~1.6.0",
     "mkdirp": "~0.3.5",
