@@ -5,13 +5,11 @@ var Network = require('../lib/network/network.js'),
     internals = {
         //test port and host
         port: 4445,
-        host: "localhost",
+        host: "localhost"
     };
 
 describe("Network listening functions", function() {
-
     var network = new Network();
-
     it("should listen", function(done) {
         network.listen(internals.port, internals.host, done);
     });
@@ -105,6 +103,15 @@ describe("Peer Messages", function(done) {
         });
         peer2.sendDisconnect(0x08);
     });
+
+    it("should be not send anymore packets after dissconect", function(done) {
+        network.once('message.ping', function() {
+            throw("packet was sent");
+        });
+        peer2.sendPing();
+        done();
+    });
+
 });
 
 describe("Message Validation", function(done) {
