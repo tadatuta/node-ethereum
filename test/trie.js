@@ -1,4 +1,4 @@
-var Trie = require('../lib/schema/trie/trie');
+var Trie = require('../lib/trie/trie');
 var Util = require('../lib/util');
 var assert = require('assert');
 
@@ -115,13 +115,13 @@ describe('Should be able to delete nodes from trie:', function () {
 });
 
 describe.skip('Testing root hash', function (argument) {
-  it('should match the python implementation', function() {
+  it('should match the python implementation', function () {
     var trie = new Trie(fakeDB, '', '');
-    trie.update('dog','puppy');
-    trie.update('horse','stallion');
+    trie.update('dog', 'puppy');
+    trie.update('horse', 'stallion');
     trie.update('do', 'verb');
-    trie.update('doge','coin');
-    
+    trie.update('doge', 'coin');
+
     assert.equal(trie.root, '5991bb8c6514148a29db676a14ac506cd2cd5775ace63c30a4fe457715e9ac84');
   });
 });
