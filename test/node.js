@@ -1,4 +1,4 @@
-var Node = require('../lib/schema/trie/node');
+var Node = require('../lib/trie/node');
 var Util = require('../lib/util');
 var assert = require('assert');
 

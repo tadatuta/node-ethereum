@@ -1,4 +1,4 @@
-var Cache = require('../lib/schema/trie/cache');
+var Cache = require('../lib/trie/cache');
 var assert = require('assert');
 
 describe('Cache:', function () {
