@@ -1,7 +1,7 @@
 var Trie = require('../lib/trie/trie');
 var Util = require('../lib/util');
 var assert = require('assert');
-
+var RLP = require('rlp');
 var fakeDB = {
   db: {},
   put: function (key, value) {
@@ -88,7 +88,7 @@ describe('Should be able to update and get trie:', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('dog', LONG_VALUE);
     var result = trie.get('dog');
-    assert(Util.deepEqual(result, LONG_VALUE));
+    assert.equal(result, LONG_VALUE);
   });
 
   it('should do replace when update with same key', function () {
@@ -97,7 +97,7 @@ describe('Should be able to update and get trie:', function () {
     var result = trie.get('dog');
     trie.update('dog', LONG_VALUE + 'yolo');
     result = trie.get('dog');
-    assert(Util.deepEqual(result, LONG_VALUE + 'yolo'));
+    assert.equal(result, LONG_VALUE + 'yolo');
   });
 });
 
@@ -110,18 +110,46 @@ describe('Should be able to delete nodes from trie:', function () {
     var expected = trie.root;
     trie.update('dog', LONG_VALUE);
     trie.del('dog');
-    assert(Util.deepEqual(expected, trie.root));
+    assert.deepEqual(trie.root, expected);
+
   });
 });
 
-describe.skip('Testing root hash', function (argument) {
-  it('should match the python implementation', function () {
-    var trie = new Trie(fakeDB, '', '');
-    trie.update('dog', 'puppy');
-    trie.update('horse', 'stallion');
-    trie.update('do', 'verb');
-    trie.update('doge','coin');
-    
-    assert.equal(trie.root, '5991bb8c6514148a29db676a14ac506cd2cd5775ace63c30a4fe457715e9ac84');
+describe('Testing root hash', function (argument) {
+  var trie = new Trie(fakeDB, '', '');
+  var cppRootHash = "2f4399b08efe68945c1cf90ffe85bbe3ce978959da753f9e649f034015b8817d";
+  var cppAccHash = "f85e9a010000000000000000000000000000000000000000000000000080a00000000000000000000000000000000000000000000000000000000000000000a0c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470";
+
+  var g = new Buffer('8a40bfaa73256b60764c1bf40675a99083efb075', 'hex');
+  var j = new Buffer('e6716f9544a56c530d868e4bfbacb172315bdead', 'hex');
+  var v = new Buffer('1e12515ce3e0f817a4ddef9ca55788a1d66bd2df', 'hex');
+  var a = new Buffer('1a26338f0d905e295fccb71fa9ea849ffa12aaf4', 'hex');
+  var hash = Util.sha3('');
+  var stateRoot = new Buffer(32);
+  stateRoot.fill(0);
+  var startAmount = new Buffer(26);
+  startAmount.fill(0);
+  startAmount[0] = 1;
+  var account = [startAmount, 0, stateRoot, new Buffer(hash, 'hex')];
+  var encodeAcc = RLP.encode(account);
+  it('should match cpp account hash', function () {
+    assert.deepEqual(encodeAcc, new Buffer(cppAccHash, 'hex'))
+  });
+
+  it('should match cpp state hash', function () {
+
+    console.log("Account: ", encodeAcc.toString('hex'));
+    trie.update(g, encodeAcc);
+    console.log("trie root: ", trie.root.toString('hex'));
+    trie.update(j, encodeAcc)
+    console.log("trie root: ", trie.root.toString('hex'));
+
+    trie.update(v, encodeAcc)
+    console.log("trie root: ", trie.root.toString('hex'));
+
+    trie.update(a, encodeAcc);
+    console.log("trie root: ", trie.root.toString('hex'));
+
+    assert.deepEqual(trie.root, new Buffer(cppRootHash, 'hex'));
   });
 });
