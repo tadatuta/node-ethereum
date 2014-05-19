@@ -110,7 +110,8 @@ describe('Should be able to delete nodes from trie:', function () {
     var expected = trie.root;
     trie.update('dog', LONG_VALUE);
     trie.del('dog');
-    assert(Util.deepEqual(expected, trie.root));
+    assert.deepEqual(trie.root, expected);
+
   });
 });
 
@@ -120,8 +121,36 @@ describe.skip('Testing root hash', function (argument) {
     trie.update('dog', 'puppy');
     trie.update('horse', 'stallion');
     trie.update('do', 'verb');
-    trie.update('doge','coin');
-    
+    trie.update('doge', 'coin');
+
     assert.equal(trie.root, '5991bb8c6514148a29db676a14ac506cd2cd5775ace63c30a4fe457715e9ac84');
+  });
+
+  it('should match cpp state hash', function () {
+    var g = new Buffer('8a40bfaa73256b60764c1bf40675a99083efb075', 'hex');
+    var j = new Buffer('e6716f9544a56c530d868e4bfbacb172315bdead', 'hex');
+    var v = new Buffer('1e12515ce3e0f817a4ddef9ca55788a1d66bd2df', 'hex');
+    var a = new Buffer('1a26338f0d905e295fccb71fa9ea849ffa12aaf4', 'hex');
+    var hash = new Sha3.SHA3Hash(256);
+
+    var stateRoot = new Buffer(32);
+    stateRoot.fill(0);
+    var startAmount = new Buffer(26);
+    startAmount.fill(0);
+    startAmount[0] = 1;
+    var account = [startAmount, 0, stateRoot, new Buffer(hash.digest('hex'), 'hex')];
+    var data = rlp.encode(account);
+    console.log("Account: ", data.toString('hex'));
+    trie.update(g, data);
+    console.log("trie root: ", trie.root.toString('hex'));
+    trie.update(j, data)
+    console.log("trie root: ", trie.root.toString('hex'));
+
+    trie.update(v, data)
+    console.log("trie root: ", trie.root.toString('hex'));
+
+    trie.update(a, data);
+    console.log("trie root: ", trie.root.toString('hex'));
+
   });
 });
