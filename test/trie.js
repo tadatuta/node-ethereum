@@ -88,7 +88,7 @@ describe('Should be able to update and get trie:', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('dog', LONG_VALUE);
     var result = trie.get('dog');
-    assert(Util.deepEqual(result, LONG_VALUE));
+    assert.equal(result, LONG_VALUE);
   });
 
   it('should do replace when update with same key', function () {
@@ -97,7 +97,7 @@ describe('Should be able to update and get trie:', function () {
     var result = trie.get('dog');
     trie.update('dog', LONG_VALUE + 'yolo');
     result = trie.get('dog');
-    assert(Util.deepEqual(result, LONG_VALUE + 'yolo'));
+    assert.equal(result, LONG_VALUE + 'yolo');
   });
 });
 
