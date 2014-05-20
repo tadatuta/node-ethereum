@@ -1,4 +1,5 @@
 var Trie = require('../lib/trie/trie');
+var State = require('../lib/chain/state');
 var Util = require('../lib/util');
 var assert = require('assert');
 var RLP = require('rlp');
@@ -124,14 +125,16 @@ describe('Testing root hash', function (argument) {
   var j = new Buffer('e6716f9544a56c530d868e4bfbacb172315bdead', 'hex');
   var v = new Buffer('1e12515ce3e0f817a4ddef9ca55788a1d66bd2df', 'hex');
   var a = new Buffer('1a26338f0d905e295fccb71fa9ea849ffa12aaf4', 'hex');
-  var hash = Util.sha3('');
-  var stateRoot = new Buffer(32);
-  stateRoot.fill(0);
+  // var hash = Util.sha3('');
+  // var stateRoot = new Buffer(32);
+  // stateRoot.fill(0);
   var startAmount = new Buffer(26);
   startAmount.fill(0);
   startAmount[0] = 1;
-  var account = [startAmount, 0, stateRoot, new Buffer(hash, 'hex')];
-  var encodeAcc = RLP.encode(account);
+  var account = new State().createAccount(null, startAmount);
+
+  // var account = [startAmount, 0, stateRoot, new Buffer(hash, 'hex')];
+  var encodeAcc = account.hash();
 
   it('should match cpp state hash', function () {
 
