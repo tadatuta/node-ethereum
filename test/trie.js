@@ -1,7 +1,8 @@
 var Trie = require('../lib/trie/trie');
+var State = require('../lib/chain/state');
 var Util = require('../lib/util');
 var assert = require('assert');
-
+var RLP = require('rlp');
 var fakeDB = {
   db: {},
   put: function (key, value) {
@@ -88,7 +89,7 @@ describe('Should be able to update and get trie:', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('dog', LONG_VALUE);
     var result = trie.get('dog');
-    assert(Util.deepEqual(result, LONG_VALUE));
+    assert.equal(result, LONG_VALUE);
   });
 
   it('should do replace when update with same key', function () {
@@ -97,7 +98,7 @@ describe('Should be able to update and get trie:', function () {
     var result = trie.get('dog');
     trie.update('dog', LONG_VALUE + 'yolo');
     result = trie.get('dog');
-    assert(Util.deepEqual(result, LONG_VALUE + 'yolo'));
+    assert.equal(result, LONG_VALUE + 'yolo');
   });
 });
 
@@ -110,18 +111,7 @@ describe('Should be able to delete nodes from trie:', function () {
     var expected = trie.root;
     trie.update('dog', LONG_VALUE);
     trie.del('dog');
-    assert(Util.deepEqual(expected, trie.root));
-  });
-});
+    assert.deepEqual(trie.root, expected);
 
-describe.skip('Testing root hash', function (argument) {
-  it('should match the python implementation', function () {
-    var trie = new Trie(fakeDB, '', '');
-    trie.update('dog', 'puppy');
-    trie.update('horse', 'stallion');
-    trie.update('do', 'verb');
-    trie.update('doge','coin');
-    
-    assert.equal(trie.root, '5991bb8c6514148a29db676a14ac506cd2cd5775ace63c30a4fe457715e9ac84');
   });
 });
