@@ -132,13 +132,9 @@ describe('Testing root hash', function (argument) {
   startAmount[0] = 1;
   var account = [startAmount, 0, stateRoot, new Buffer(hash, 'hex')];
   var encodeAcc = RLP.encode(account);
-  it('should match cpp account hash', function () {
-    assert.deepEqual(encodeAcc, new Buffer(cppAccHash, 'hex'))
-  });
 
   it('should match cpp state hash', function () {
 
-    console.log("Account: ", encodeAcc.toString('hex'));
     trie.update(g, encodeAcc);
     console.log("trie root: ", trie.root.toString('hex'));
     trie.update(j, encodeAcc)
