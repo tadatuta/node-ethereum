@@ -7,11 +7,13 @@ describe('Type checks:', function () {
   });
 
   it('should know if the state object is account', function () {
-
+    var acc = new State().createAccount();
+    assert(!acc.isContract);
   });
 
   it('should know if the state object is contract', function () {
-
+    var acc = new State().createContract();
+    assert(acc.isContract);
   });
 });
 
