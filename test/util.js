@@ -1,7 +1,7 @@
 var assert = require('assert');
 var Util = require('../lib/util');
 
-describe('Sha3 256 bits:', function () {
+describe('[Utility]: Sha3(256 bits)', function () {
   var expectedHash = "7c5ea36004851c764c44143b1dcb59679b11c9a68e5f41497f6cf3d480715331";
   var sha3Hash = Util.sha3(new Buffer('HelloWorld'));
   it('should equal expected hash string',
@@ -11,7 +11,7 @@ describe('Sha3 256 bits:', function () {
     });
 });
 
-describe('Compact encoding:', function () {
+describe('[Utility]: Compact encoding', function () {
   it('should handle even case.', function () {
     var testBuffer = [1, 2, 3, 4, 5];
     var res = Util.compactEncode(testBuffer).toJSON();
@@ -37,7 +37,7 @@ describe('Compact encoding:', function () {
 
 });
 
-describe('Compact hex decoding:', function () {
+describe('[Utility]: Compact hex decoding', function () {
   it('should decode to hex.', function () {
     var exp = [7, 6, 6, 5, 7, 2, 6, 2, 16];
     var res = Util.compactHexDecode('verb');
@@ -46,7 +46,7 @@ describe('Compact hex decoding:', function () {
 
 });
 
-describe('Compact decoding:', function () {
+describe('[Utility]: Compact decoding', function () {
   it('should handle even case.', function () {
     var testBuffer = new Buffer([17, 35, 69]);
     var exp = [1, 2, 3, 4, 5];

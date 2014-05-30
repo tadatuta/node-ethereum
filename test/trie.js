@@ -34,16 +34,14 @@ var fakeDB = {
 };
 const LONG_VALUE = "1234567890abcdefghijklmnopqrstuvwxxzABCEFGHIJKLMNOPQRSTUVWXYZ";
 
-describe('Type checks:', function () {
-  it('should type check trie.', function () {
-    var n = new Trie(fakeDB, '', '');
-    assert(Util.isTrie(n));
-  });
-});
-
-describe('should sync:', function () {
+describe('[Trie]: Basic functions', function () {
   afterEach(fakeDB.reset);
   var trie = new Trie(fakeDB, '', '');
+
+  it('should type check trie.', function () {
+    assert(Util.isTrie(trie));
+  });
+
   it('should sync and update the db accordingly.', function () {
     trie.update("dog", LONG_VALUE);
     assert(fakeDB.isEmpty());
@@ -51,11 +49,7 @@ describe('should sync:', function () {
     trie.cache.commit();
     assert(!fakeDB.isEmpty());
   });
-});
 
-describe('should undo:', function () {
-  afterEach(fakeDB.reset);
-  var trie = new Trie(fakeDB, '', '');
   it('should undo and update the db accordingly.', function () {
     trie.update("dog", LONG_VALUE);
     trie.cache.commit();
@@ -67,7 +61,7 @@ describe('should undo:', function () {
   });
 });
 
-describe('should cache nodes:', function () {
+describe('[Trie]: Cache nodes', function () {
   after(fakeDB.reset);
   var trie = new Trie(fakeDB, '', '');
   it('cache nodes size should increase when we update trie.', function () {
@@ -82,10 +76,10 @@ describe('should cache nodes:', function () {
   });
 });
 
-describe('Should be able to update and get trie:', function () {
+describe('[Trie]: Update/Get', function () {
   afterEach(fakeDB.reset);
 
-  it('should update the trie with value provided.', function () {
+  it('should update the trie with value provided', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('dog', LONG_VALUE);
     var result = trie.get('dog');
@@ -102,10 +96,10 @@ describe('Should be able to update and get trie:', function () {
   });
 });
 
-describe('Should be able to delete nodes from trie:', function () {
+describe('[Trie]: Delete', function () {
   afterEach(fakeDB.reset);
 
-  it('should be able to delete node.', function () {
+  it('should be able to delete node', function () {
     var trie = new Trie(fakeDB, '', '');
     trie.update('cat', LONG_VALUE);
     var expected = trie.root;

@@ -2,13 +2,13 @@ var WorldState = require('../lib/chain/worldState');
 var State = require('../lib/chain/state');
 var assert = require('assert');
 
-describe('Type checks:', function () {
+describe('[WorldState]: Basic functions', function () {
   it('should type check world state.', function () {
 
   });
 });
 
-describe('World State Hash', function () {
+describe('[WorldState]: State Hash', function () {
   it('should have the same state root hash as C++ code', function () {
     var cppRootHash = "2f4399b08efe68945c1cf90ffe85bbe3ce978959da753f9e649f034015b8817d";
 

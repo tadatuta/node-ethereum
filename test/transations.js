@@ -42,7 +42,7 @@ var transactions = [
 ];
 
 
-describe('Transaction Functions', function () {
+describe('[Transaction]: Basic functions', function () {
   var transaction;
 
   it('should decode a transaction', function () {
