@@ -44,6 +44,7 @@
     "sha3": "~1.0.0"
   },
   "devDependencies": {
+    "mocha": ">=1.15.1",
     "grunt-mocha-test": "~0.8.2"
   },
   "licenses": "MIT"
