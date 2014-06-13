@@ -1,4 +1,5 @@
 var assert = require('assert');
+var bignum = require('bignum');
 var Util = require('../lib/util');
 
 describe('[Utility]: Sha3(256 bits)', function () {
@@ -74,4 +75,19 @@ describe('[Utility]: Compact decoding', function () {
     assert.deepEqual(res, exp);
   });
 
+});
+
+describe('[Currency]: convert currency to string', function () {
+  it('should be able to convert to Szabo.', function () {
+    var number = bignum('30000000000000');
+    var exp = "30 Szabo";
+    var res = Util.currencyToString(number);
+    assert.equal(res, exp);
+  });
+  it('should be able to convert to Finney.', function () {
+    var number = bignum('3000000000000000');
+    var exp = "3 Finney";
+    var res = Util.currencyToString(number);
+    assert.equal(res, exp);
+  });
 });
