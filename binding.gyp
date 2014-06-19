@@ -4,7 +4,7 @@
   },
   'targets': [
     {
-      'target_name': 'keypair',
+      'target_name': 'KeyPair',
       'sources': [
         'secp256k1/keypair.cc'
       ],
